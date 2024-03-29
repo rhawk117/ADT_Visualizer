@@ -53,6 +53,7 @@
     <Compile Include="View\DictView.cs" />
     <Compile Include="View\QueueView.cs" />
     <Compile Include="View\ADTViewer.cs" />
+    <Compile Include="View\Utils.cs" />
     <Compile Include="View\ViewI.cs" />
   </ItemGroup>
   <ItemGroup>

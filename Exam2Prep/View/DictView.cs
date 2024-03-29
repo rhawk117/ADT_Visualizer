@@ -25,7 +25,7 @@ namespace Exam2Prep.View
 
         private void error()
         {
-            WriteLine($"[ Returning to Main Menu... ]");
+            WriteLine("[ Returning to Main Menu... ]");
         }
 
 
@@ -44,7 +44,7 @@ namespace Exam2Prep.View
             }
             catch (ApplicationException)
             {
-                WriteLine($"[ Something went horribly Wrong ]");
+                WriteLine("[ Something went horribly Wrong ]");
                 error();
             }
         }
@@ -91,7 +91,7 @@ namespace Exam2Prep.View
         }
 
     }
-
+    // static coupled class to help visualize the different collision resolution strategies
     public static class DictCustomizer
     {
         public static Dict<int, int> CreateCustomDict()
@@ -135,7 +135,7 @@ namespace Exam2Prep.View
             }
             else
             {
-                WriteLine("[!] Invalid Size, try again...");
+                WriteLine("[ ! ] Dude come on... invalid size, try again...");
                 return getSize();
             }
         }

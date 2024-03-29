@@ -24,7 +24,7 @@ namespace Exam2Prep.View
         }
         private void error()
         {
-            WriteLine($"[ Returning to Main Menu... ]");
+            WriteLine($"***\n[ Returning to Main Menu... ]\n***");
         }
 
         private void emptyCheck()
@@ -40,9 +40,12 @@ namespace Exam2Prep.View
         {
             try
             {
-                WriteLine($"[ Adding {val} to the {type}... ]");
+                WriteLine($"[ PRE INSERTION >> {val} ]\n");
+                avl.Prints();
+                WriteLine($"[ After Adding {val} to the {type}... ]");
                 avl.Insert(val);
                 avl.Prints();
+                WriteLine();
                 enterToContinue();
             }
             catch (ApplicationException)
@@ -67,6 +70,8 @@ namespace Exam2Prep.View
         {
             try
             {
+                WriteLine($"[ PRE REMOVAL >> {val} ]\n");
+                avl.Prints();
                 WriteLine($"[ Removing {val} from the {type}... ]");
                 avl.Remove(val);
                 avl.Prints();
