@@ -34,8 +34,9 @@ namespace Exam2Prep.View
             WriteLine(title);
 
             char key = ReadKey().KeyChar;
+            key = char.ToLower(key);
 
-            if (key == 'q') WriteLine("[ Exiting UI... ]");
+            if (key == 'q') WriteLine("\t\t[ Exiting UI... ]");
 
             else handleKeys(key);
         }
@@ -104,6 +105,7 @@ namespace Exam2Prep.View
             }
             return val;
         }
+
 
 
 
