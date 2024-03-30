@@ -9,42 +9,52 @@ namespace Exam2Prep.View
 {
     public static class Utils
     {
-        // this is not a utils class this ( wink wink )
+        // this is not a utils class ( wink wink )
         public static void StartUp()
         {
-            HugeDisclaimer();
-            questionaire();
+            hugeDisclaimer();
+            try
+            {
+                disclaimerQuiz();
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"[ UNAUTHORIZED ACCESS ]: {ex.Message}");
+                promptText("[ ! ] Try again [ ! ]");
+                Console.ResetColor();
+                Environment.Exit(0);
+            }
         }
         private static void promptText(string text, int delay = 1500)
         {
             Console.WriteLine(text);
             Thread.Sleep(delay);
         }
-        private static void HugeDisclaimer()
+        private static void hugeDisclaimer()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             promptText("[ ! ] DISCLAIMER (please read) [ ! ]");
             Console.ResetColor();
             promptText("[ i ] I made this program / UI to help study for Exam 2.");
-            promptText("[ i ] I SOLELY made the UI itself (everything in the 'View' folder");
+            promptText("[ i ] I SOLELY made the UI itself (everything in the 'View' folder)");
             promptText("[ i ] The rest / ADTs themselves were made by Professor Dowell ");
             promptText("[ i ] If there are any issues or bugs let me know and I'll address them.");
             promptText("[ i ] This program is not perfect and I created it as a fun way to study.");
             promptText("[ i ] I hope you find it helpful");
             Console.WriteLine("[ Press ENTER to continue ... ]");
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
-        private static void questionaire()
+        private static void disclaimerQuiz()
         {
             promptText("[ Let's see if you were paying attention... ]", 1000);
-            bool isUserIntelligent = question(" QUESTION 1 Did I make the data structures", new string[] { "Yes", "No, Dowell did", "A Unicorn did", "I cannot read" }, 'b');
+            bool isUserIntelligent = question(" QUESTION 1: Did I make the data structures", new string[] { "Yes", "No, Dowell did", "A Unicorn did", "I cannot read" }, 'b');
             if (!isUserIntelligent)
             {
                 Incorrect();
             }
             Correct();
-            bool isUserSmart = question("Who made the UI? ", new string[] { "Candice", "Mike Hawk", "You Made the UI", "bob" }, 'c');
+            bool isUserSmart = question("QUESTION 2: Who made the UI? ", new string[] { "Candice", "Mike Hawk", "You Made the UI", "bob" }, 'c');
             if (!isUserSmart)
             {
                 Incorrect();
@@ -55,13 +65,15 @@ namespace Exam2Prep.View
         private static bool question(string prompt, string[] choices, char ans)
         {
             char[] options = { 'a', 'b', 'c', 'd' };
+
             Console.WriteLine($"[ ? ] {prompt}");
             for (int i = 0; i < choices.Length; i++)
             {
                 Console.WriteLine($"[ {options[i]} ] {choices[i]}");
             }
             char c = Console.ReadKey().KeyChar;
-            if (options.Contains(char.ToLower(c)))
+            c = char.ToLower(c);
+            if (options.Contains(c))
             {
                 return c == ans;
             }

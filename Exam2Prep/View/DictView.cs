@@ -101,7 +101,7 @@ namespace Exam2Prep.View
             {
                 size = getSize();
             }
-            WriteLine($"[i] Size will be {size} (default 31)\n[ Press ENTER ]");
+            WriteLine($"[i] Size will be {size} (default is 31)\n[ Press ENTER ]");
             ReadLine();
 
             Dict<int, int>.CollisionRes strategy = Dict<int, int>.CollisionRes.Double;

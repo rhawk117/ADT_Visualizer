@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Exam2Prep.View
 {
+    // made by ryan hawkins - enjoy =)
     public class ADTViewer
     {
-        // ASCII Art from https://edukits.co/text-art/
+        // Cool ASCII Art from - https://edukits.co/text-art/
         private const string MENUTEXT = @"
     ==================================================================================
     |       __  _____ _  _    ___   ___   __                                         |
@@ -36,12 +37,10 @@ namespace Exam2Prep.View
     |                                                                                |
     ==================================================================================";
 
-        private View activeWindows;
+        private View currentUI; // which UI is currently active
 
-        public ADTViewer()
-        {
-            activeWindows = null;
-        }
+        public ADTViewer() => currentUI = null;
+
 
         // call this to run the UI
         public void RenderUI()
@@ -73,16 +72,16 @@ namespace Exam2Prep.View
                     break;
             }
 
-            activeWindows = null; // to prevent your memory from deep frying itself
-            RenderUI();
+            this.currentUI = null; // dispose
+            RenderUI(); // loop UI till 'q'
         }
 
         // maybe can expand this later to allow for user to save the ADT while running
         // but that would require a lot of memory 
         private void switchWindow(View view)
         {
-            this.activeWindows = view;
-            activeWindows.Run();
+            this.currentUI = view;
+            currentUI.Run();
         }
 
 
