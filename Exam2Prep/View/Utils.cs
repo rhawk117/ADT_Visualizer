@@ -48,13 +48,21 @@ namespace Exam2Prep.View
         private static void disclaimerQuiz()
         {
             promptText("[ Let's see if you were paying attention... ]", 1000);
-            bool isUserIntelligent = question(" QUESTION 1: Did I make the data structures", new string[] { "Yes", "No, Dowell did", "A Unicorn did", "I cannot read" }, 'b');
+            bool isUserIntelligent = askQuestion(
+                " QUESTION 1: Did I make the data structures",
+                 new string[] { "Yes", "No, Dowell did", "A Unicorn did", "I cannot read" },
+                 'b'
+            );
             if (!isUserIntelligent)
             {
                 Incorrect();
             }
             Correct();
-            bool isUserSmart = question("QUESTION 2: Who made the UI? ", new string[] { "Candice", "Mike Hawk", "You Made the UI", "bob" }, 'c');
+            bool isUserSmart = askQuestion(
+                " QUESTION 2: Who made the UI? ",
+                new string[] { "Candice", "Mike Hawk", "You Made the UI", "bob" },
+                'c'
+            );
             if (!isUserSmart)
             {
                 Incorrect();
@@ -62,7 +70,7 @@ namespace Exam2Prep.View
             Correct();
         }
 
-        private static bool question(string prompt, string[] choices, char ans)
+        private static bool askQuestion(string prompt, string[] choices, char ans)
         {
             char[] options = { 'a', 'b', 'c', 'd' };
 
@@ -82,7 +90,7 @@ namespace Exam2Prep.View
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\a\a[ X ] Provide a Valid Response [ X ]");
                 Console.ResetColor();
-                return question(prompt, choices, ans);
+                return askQuestion(prompt, choices, ans);
             }
         }
         private static void Incorrect()

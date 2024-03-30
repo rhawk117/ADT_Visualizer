@@ -66,7 +66,7 @@ namespace Exam2Prep.View
         protected void enterToContinue()
         {
             WriteLine("[ Press Enter to Continue... ]\n");
-            ReadLine();
+            ReadKey();
         }
 
 
