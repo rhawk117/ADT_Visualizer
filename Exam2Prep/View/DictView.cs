@@ -85,10 +85,7 @@ namespace Exam2Prep.View
             enterToContinue();
         }
 
-        public void Clear()
-        {
-            dict.Clear();
-        }
+        public void Clear() => dict.Clear();
 
     }
     // static coupled class to help visualize the different collision resolution strategies
@@ -118,7 +115,7 @@ namespace Exam2Prep.View
         private static bool confirmAction(string attr)
         {
             Write($@"
-                [ ? ] Select a {attr} for the Dictionary [ ? ]
+                [ ? ] Select a { attr } for the Dictionary [ ? ]
                            [ y (yes) \ n (no) ]
                         
                         >> Type Here: ");

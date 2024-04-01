@@ -6,14 +6,19 @@ namespace Exam2Prep
     {
         static void Main(string[] args)
         {
-            Utils.StartUp(); // you can comment this line after it runs for the first time
+            // you can comment this line after it runs for the first time (lol)
+            //Utils.StartUp();
 
             // UI Master - Select an ADT to visualize in the menu itself
             ADTViewer adt = new ADTViewer();
             adt.RenderUI();
 
-            // note you can pass queues, avls, and dicts to the views
-            // however it's not required and is an optional parameter
+            /* 
+             *  NOTE - you can pass queues, avls, and dicts to the views ctor
+             *  however it's not required and is an optional parameter 
+             */
+
+
 
             // Priority Queue / Binary Heap
             // QueueView qv = new QueueView();
@@ -26,9 +31,6 @@ namespace Exam2Prep
             // Dictionary / Hash Table
             // DictView dv = new DictView();
             // dv.Run();
-
-
-
         }
 
 

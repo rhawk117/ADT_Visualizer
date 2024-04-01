@@ -58,6 +58,7 @@ namespace Exam2Prep.View
                 Incorrect();
             }
             Correct();
+
             bool isUserSmart = askQuestion(
                 " QUESTION 2: Who made the UI? ",
                 new string[] { "Candice", "Mike Hawk", "You Made the UI", "bob" },
@@ -72,12 +73,14 @@ namespace Exam2Prep.View
 
         private static bool askQuestion(string prompt, string[] choices, char ans)
         {
-            char[] options = { 'a', 'b', 'c', 'd' };
+            char[] options = {
+                'a', 'b', 'c', 'd'
+            };
 
             Console.WriteLine($"[ ? ] {prompt}");
             for (int i = 0; i < choices.Length; i++)
             {
-                Console.WriteLine($"[ {options[i]} ] {choices[i]}");
+                Console.WriteLine($"[ {options[i]}. ] {choices[i]}");
             }
             char c = Console.ReadKey().KeyChar;
             c = char.ToLower(c);

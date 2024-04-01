@@ -445,6 +445,7 @@ namespace Exam2Prep
                     rPtr = doubleRightChild(rPtr);
                 }
             }
+
             // Left Heavy
             else if (TreeBalance > 1)
             {

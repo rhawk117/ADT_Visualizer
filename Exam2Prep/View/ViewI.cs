@@ -12,7 +12,6 @@ namespace Exam2Prep.View
         protected string type;
 
         protected string title;
-
         public View(string type)
         {
             title = $@"
@@ -59,16 +58,16 @@ namespace Exam2Prep.View
         /// however I created various ways of viewing the data structure
         /// so maybe this makes more sense to be virtual 
         /// </summary>
+
         protected virtual void ViewADT() { }
 
 
         // peek DRY (don't repeat yourself) principle
         protected void enterToContinue()
         {
-            WriteLine("[ Press Enter to Continue... ]\n");
+            WriteLine("\n[ Press Enter to Continue... ]\n");
             ReadKey();
         }
-
 
         protected virtual void add(int val) { }
 
@@ -82,7 +81,6 @@ namespace Exam2Prep.View
             if (addVal != -1) add(addVal);
 
             else Run();
-
         }
         // can't really generalize this one, children classes implement own
         public virtual void Remove() { }
@@ -94,10 +92,9 @@ namespace Exam2Prep.View
             WriteLine(prompt);
             int val;
             string input = ReadLine();
-            if (input.ToLower() == "q")
-            {
-                return -1;
-            }
+
+            if (input.ToLower() == "q") return -1;
+
             else if (!int.TryParse(input, out val))
             {
                 WriteLine("[ Input an integer value type q if you want to exit ]");
