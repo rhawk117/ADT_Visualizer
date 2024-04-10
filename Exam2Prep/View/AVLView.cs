@@ -62,8 +62,11 @@ namespace Exam2Prep.View
             int rmveVal = getIntput($"[-] Enter a value to Remove from the {type} or q to quit: ");
 
             if (rmveVal != -1) remove(rmveVal);
+        }
 
-
+        protected override void doClear()
+        {
+            avl.Clear();
         }
 
         protected override void remove(int val)
@@ -95,8 +98,6 @@ namespace Exam2Prep.View
                 |      [ Select an option to view ]        |
                 |                                          |
                 |    [ t ] View Tree                       |
-                |    [ x ] View Max Node (Right most)      |
-                |    [ m ] View Min Node (Left most)       |
                 |    [ q ] Go Back                         |
                 |==========================================|
             ");
@@ -111,10 +112,6 @@ namespace Exam2Prep.View
             Clear();
 
             if (c == 't') avl.Prints();
-
-            else if (c == 'x') WriteLine($"[ Max Node ]\n>> {avl.FindMax()}");
-
-            else if (c == 'm') WriteLine($"[ Min Node ]\n>> {avl.FindMin()}");
 
             else WriteLine("[ Select a valid menu option ]");
 

@@ -54,6 +54,11 @@ namespace Exam2Prep.View
             queue.PrintTree();
             enterToContinue();
         }
+        protected override void doClear()
+        {
+            queue = null;
+            queue = new PriorQ<int, int>();
+        }
 
         protected override void ViewADT()
         {

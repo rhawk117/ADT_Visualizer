@@ -50,6 +50,12 @@ namespace Exam2Prep.View
             }
         }
 
+        protected override void doClear()
+        {
+            WriteLine("[ NOTE: The collision strategy will remain the same ]");
+            dict.Clear();
+        }
+
         public override void Remove()
         {
             int keyToRmve = getIntput($"[-] Enter a key to Remove from the {type} or q to quit: ");
@@ -85,9 +91,6 @@ namespace Exam2Prep.View
             WriteLine(dict);
             enterToContinue();
         }
-
-        public void Clear() => dict.Clear();
-
     }
     // static coupled class to help visualize the different collision resolution strategies
     public static class DictCustomizer

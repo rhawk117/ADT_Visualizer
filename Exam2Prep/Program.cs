@@ -11,14 +11,6 @@ namespace Exam2Prep
 
             // UI Master - Select an ADT to visualize in the menu itself
 
-            //Console.WriteLine(107 % 101);
-
-            //for (int i = 0; i < 105; i++)
-            //{
-            //    Console.WriteLine($"{i} % 101 = {i % 101}");
-
-            //}
-
             RunUI();
 
 

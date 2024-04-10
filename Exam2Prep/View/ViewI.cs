@@ -20,6 +20,7 @@ namespace Exam2Prep.View
 
                 [ a ] Add
                 [ r ] Remove
+                [ c ] Clear / Reset
                 [ v ] View {type}
                 [ q ] Quit
           =============================================            
@@ -42,13 +43,28 @@ namespace Exam2Prep.View
 
         public void handleKeys(char c)
         {
-            if (c == 'a') Add();
+            switch (c)
+            {
+                case 'a':
+                    Add();
+                    break;
 
-            else if (c == 'r') Remove();
+                case 'r':
+                    Remove();
+                    break;
 
-            else if (c == 'v') ViewADT();
+                case 'v':
+                    ViewADT();
+                    break;
 
-            else WriteLine("[ Select a valid menu option (a, r, v, q) ]");
+                case 'c':
+                    ClearADT();
+                    break;
+
+                default:
+                    WriteLine("[ Select a valid menu option (a, r, v, q) ]");
+                    break;
+            }
 
             Run();
         }
@@ -61,6 +77,28 @@ namespace Exam2Prep.View
 
         protected virtual void ViewADT() { }
 
+        protected void ClearADT()
+        {
+            char c;
+            Write($@"
+            [ ? ] Clear the {type} [ ? ]
+            [ ! ] Warning this cannot be undone [ ! ]
+            
+            >> Type Y to proceed or anything else to back out: 
+            ");
+            c = char.ToLower(ReadKey(true).KeyChar);
+            if (c != 'y')
+            {
+                WriteLine($"[ ... ] Cancelling clearing the {type}");
+                enterToContinue();
+                return;
+            }
+            WriteLine($"[ X ] Clearing the {type} [ X ]");
+            doClear();
+            enterToContinue();
+        }
+
+        protected virtual void doClear() { }
 
         // peek DRY (don't repeat yourself) principle
         protected void enterToContinue()
