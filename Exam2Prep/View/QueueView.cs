@@ -1,9 +1,6 @@
 ﻿using OurPriorityQueue;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Console;
 
 namespace Exam2Prep.View
@@ -11,7 +8,6 @@ namespace Exam2Prep.View
     public class QueueView : View
     {
         private PriorQ<int, int> queue;
-
         public QueueView(PriorQ<int, int> q = null) : base("Priority Queue")
         {
             if (q == null)
@@ -29,10 +25,12 @@ namespace Exam2Prep.View
             if (queue.IsFull())
             {
                 WriteLine($"The {type} is full going back to the main menu...");
-                Run();
             }
-            queue.Add(val, val);
-            viewResult();
+            else
+            {
+                queue.Add(val, val);
+                viewResult();
+            }
         }
 
         public override void Remove()
@@ -46,13 +44,12 @@ namespace Exam2Prep.View
             catch (ApplicationException)
             {
                 WriteLine("The Priority Queue is empty, cannot remove.");
-                Run();
             }
-
         }
 
         private void viewResult()
         {
+            WriteLine($"Queue Count = {queue.Count}");
             WriteLine($"[ Table Array ]\n{queue}\n[ Heap View ]");
             queue.PrintTree();
             enterToContinue();

@@ -10,16 +10,29 @@ namespace Exam2Prep
             //Utils.StartUp();
 
             // UI Master - Select an ADT to visualize in the menu itself
+
+            //Console.WriteLine(107 % 101);
+
+            //for (int i = 0; i < 105; i++)
+            //{
+            //    Console.WriteLine($"{i} % 101 = {i % 101}");
+
+            //}
+
+            RunUI();
+
+
+
+        }
+
+        static void RunUI()
+        {
             ADTViewer adt = new ADTViewer();
             adt.RenderUI();
+        }
 
-            /* 
-             *  NOTE - you can pass queues, avls, and dicts to the views ctor
-             *  however it's not required and is an optional parameter 
-             */
-
-
-
+        static void runIndividual()
+        {
             // Priority Queue / Binary Heap
             // QueueView qv = new QueueView();
             // qv.Run();
@@ -32,10 +45,6 @@ namespace Exam2Prep
             // DictView dv = new DictView();
             // dv.Run();
         }
-
-
-
-
 
 
     }

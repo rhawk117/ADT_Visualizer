@@ -92,8 +92,7 @@ namespace Exam2Prep
             {
                 if (table[i] != null)
                 {
-                    // Reuse cells by setting them to Deleted status
-                    table[i].Status = StatusType.Deleted;
+                    table[i].Status = StatusType.Deleted; // mark as deleted
                 }
             }
         }
@@ -108,7 +107,10 @@ namespace Exam2Prep
 
         private int KeyToIndex(int count, TKey aKey)
         {
-            return (Math.Abs(aKey.GetHashCode()) + CollisionFactor(count, aKey)) % table.Length;
+            return (
+                Math.Abs(aKey.GetHashCode()) + f(count, aKey)
+                ) % table.Length;
+            // hash = hash(key) + f(i) % T_Size
         }
 
         /// <summary> Allows the use of [] like an array on class instance </summary>
@@ -254,7 +256,7 @@ namespace Exam2Prep
         /// <param name="aKey"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        private int CollisionFactor(int i, TKey aKey)
+        private int f(int i, TKey aKey)
         {
             if (i == 0)
             {
@@ -360,7 +362,9 @@ namespace Exam2Prep
         private void Increment(ref int n)
         {
             if (++n == table.Length)
+            {
                 n = 0;
+            }
         }
 
         // recursive helper method
@@ -414,11 +418,89 @@ namespace Exam2Prep
             }
         }
 
-        // dowell version
 
+        public void TwoMaxKeys()
+        {
+            TKey absMax = default, scndMax = default;
+            bool haveItem = false;
 
+            foreach (var item in table)
+            {
+                if (item == null || item.Status != StatusType.Active)
+                {
+                    continue;
+                }
+                else if (!haveItem)
+                {
+                    haveItem = true;
+                    absMax = item.Key;
+                }
+                else if (item.Key.CompareTo(absMax) > 0)
+                {
+                    scndMax = absMax;
+                    absMax = item.Key;
+                }
+                else if (item.Key.CompareTo(scndMax) > 0)
+                {
+                    scndMax = item.Key;
+                }
+            }
+            if (haveItem)
+            {
+                Console.WriteLine($"First: {absMax} Second: {scndMax}");
+            }
+            else Console.WriteLine("No items were found...");
+        }
 
+        // Add a method called 'TryGetKey' to the OurDictionary class that accepts an item and, 
+        // if the item is in the table, returns the item’s key value thru the second argument
+        // with the 'out' key word.
 
+        // Keep in mind that the key value is not necessarily the position in the array.
+
+        public bool TryGetKey(TVal search, out TKey item)
+        {
+            item = default;
+            foreach (var cell in table)
+            {
+                if (cell == null || cell.Status != StatusType.Active)
+                {
+                    continue;
+                }
+                else if (cell.Value.Equals(search))
+                {
+                    item = cell.Key;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Add a method to the OurDictionary class that returns the total
+        // number of hash collisions that have occured when
+        // the hash function is hash(i) = hash(key) + f(i) % < size >
+        // Keep in mind collisions occur when more than one key share a hash
+        // code, ensure your method operates in linear time or O(n).
+
+        public int CountCollisions()
+        {
+            int total = 0;
+            for (int i = 0; i < table.Length; i++)
+            {
+                if (table[i] == null || table[i].Status != StatusType.Active)
+                {
+                    continue;
+                }
+
+                int hash = Math.Abs(table[i].Key.GetHashCode() + f(0, table[i].Key)) % table.Length;
+
+                if (hash != i)
+                {
+                    total++;
+                }
+            }
+            return total;
+        }
 
 
 

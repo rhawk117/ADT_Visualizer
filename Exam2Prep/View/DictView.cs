@@ -36,6 +36,7 @@ namespace Exam2Prep.View
                 WriteLine($"[ Adding {key} to the {type}... ]");
                 dict.Add(key, key);
                 WriteLine(dict);
+                enterToContinue();
             }
             catch (ArgumentException)
             {
@@ -115,7 +116,7 @@ namespace Exam2Prep.View
         private static bool confirmAction(string attr)
         {
             Write($@"
-                [ ? ] Select a { attr } for the Dictionary [ ? ]
+                [ ? ] Select a {attr} for the Dictionary [ ? ]
                            [ y (yes) \ n (no) ]
                         
                         >> Type Here: ");
@@ -146,7 +147,7 @@ namespace Exam2Prep.View
                 [ l ] Linear Probing =>   where f(i) = i++
                 [ q ] Quadratic Probing =>  where f(i) = (i * i)
                 [ d ] Double Hashing => where f(i) = (hash(key) + i) % (<table_size> - 1) + 1
-
+                
             ");
             char key = ReadKey().KeyChar;
             return choiceMap(key);

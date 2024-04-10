@@ -35,7 +35,7 @@ namespace OurPriorityQueue
             if (size < 10)
                 size = 10;
 
-            this.table = new Cell[size];
+            table = new Cell[size];
         }
 
         public bool IsEmpty() => (count == 0);
@@ -57,6 +57,7 @@ namespace OurPriorityQueue
 
             return table[1].Value;
         }
+
         public TValue PeekAt(int index)
         {
             if (index < 1 || index > count)
@@ -135,14 +136,12 @@ namespace OurPriorityQueue
                 TPriority parent = table[child].Priority;
                 if (child != count && table[child + 1].Priority.CompareTo(parent) < 0)
                 {
-                    Console.WriteLine($"Incr {table[child + 1].Priority} < {parent}");
                     child++;
                 }
                 // d.
                 if (table[child].Priority.CompareTo(pTmp.Priority) < 0)
                 {
                     table[hole] = table[child];
-                    Console.WriteLine($"[ Re-Assign => {table[child].Priority} < {pTmp.Priority}]");
                 }
                 else
                 {
@@ -232,10 +231,6 @@ namespace OurPriorityQueue
         ///            8          10
         ///         ┌──┴──┐     ┌──┴──┐
         ///        40     45   26    17
-        ///        
-        /// 
-        /// 
-        /// 
         /// </summary>
 
         // considerations 
@@ -255,17 +250,10 @@ namespace OurPriorityQueue
             {
                 return false;
             }
+
             int index = findIndex(search);
+
             if (index == -1) // didn't find it
-            {
-                return false;
-            }
-
-            // if the new priority is greater than the
-            // parent's than the priority will not change and
-            // will be in the same position and that shouldn't be allowed (i think)
-
-            if (index > 1 && newPriority.CompareTo(table[index / 2].Priority) > 0)
             {
                 return false;
             }
@@ -316,16 +304,160 @@ namespace OurPriorityQueue
             if (pos == -1) return false;
 
             TValue tmpValue = table[pos].Value;
+
             while (pos > 1 && table[pos / 2].Priority.CompareTo(newP) > 0)
             {
                 table[pos].Priority = table[pos / 2].Priority;
                 table[pos].Value = table[pos / 2].Value;
-                pos = pos / 2;
+                pos /= 2;
             }
             table[pos].Priority = newP;
             table[pos].Value = tmpValue;
             return true;
         }
+
+        // CountLeafNodes()
+        // write test cases 
+        public int CountLeafNodes()
+        {
+            if (count == 0)
+            {
+                return 0;
+            }
+
+            return countLeafNodes();
+        }
+
+        private int countLeafNodes(int pos = 1)
+        {
+            if (pos > count + 1)
+            {
+                return 0;
+            }
+            else if (pos * 2 > count && pos * 2 + 1 > count)
+            {
+                return 1;
+            }
+            return countLeafNodes(pos * 2) + countLeafNodes(pos * 2 + 1);
+        }
+        //31.	Write a method for the OurPriorityQueue class that
+        //returns the kth priority in a priority queue.
+        //The method is passed the kth (an int) element.
+
+        public TPriority kthPriority(uint kth)
+        {
+            if (kth > count)
+            {
+                throw new ArgumentException();
+            }
+            return kthPriority(kth, 1);
+        }
+
+        private TPriority kthPriority(uint kth, int cur)
+        {
+            if (cur == kth)
+            {
+                return table[cur].Priority;
+            }
+            return kthPriority(kth, cur + 1);
+        }
+
+        // Write a method for the OurPriorityQueue class that
+        // returns the parent of a priority that is passed
+        // to the method.
+
+        public TPriority GetParentPriority(TPriority ChildP)
+        {
+            if (count == 0)
+            {
+                throw new Exception();
+            }
+            int pos = -1;
+            for (int i = 1; i <= count && pos == -1; i++)
+            {
+                if (table[i].Priority.Equals(ChildP))
+                {
+                    pos = i;
+                }
+            }
+            if (pos == -1 || pos == 1)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return table[pos / 2].Priority;
+        }
+
+        // Add a method to the OurPriorityQueue class that 
+        // Decreases the Priority of an item. It should return
+        // true if the operation is successful, otherwise false
+
+        public bool DecreasePriority(TPriority search, TPriority update)
+        {
+            if (count == 0 || update.CompareTo(search) < 0)
+            {
+                return false;
+            }
+            int hole = -1, child;
+            for (int i = 1; i <= count && hole == -1; i++)
+            {
+                if (table[i].Priority.Equals(search))
+                {
+                    hole = i;
+                }
+            }
+
+            if (hole == -1) return false;
+
+            table[hole].Priority = update;
+            Cell ptr = table[hole];
+            for (; hole * 2 <= count; hole = child)
+            {
+                child = hole * 2;
+                if (child != count && table[child + 1].Priority.CompareTo(table[child].Priority) < 0)
+                {
+                    child++;
+                }
+                else if (table[child].Priority.CompareTo(update) < 0)
+                {
+                    table[hole] = table[child];
+                }
+                else
+                {
+                    break;
+                }
+            }
+            table[hole] = ptr;
+            return true;
+        }
+
+        // 33.	Write a method for the OurPriorityQueue class
+        // that is passed two priorities. The method returns
+        // true if the two priorities are siblings (i.e., they
+        // have the same parent) and false otherwise.
+        // Assume there are no duplicate priorities
+
+        public bool AreSiblings(TPriority left, TPriority right)
+        {
+            int r = -1, l = -1;
+            for (int i = 2; i <= count && r == -1 || l == -1; i++)
+            {
+                if (table[i].Priority.Equals(right))
+                {
+                    r = i;
+                }
+                else if (table[i].Priority.Equals(left))
+                {
+                    l = i;
+                }
+            }
+            if (r == -1 || l == -1)
+            {
+                return false;
+            }
+            return r / 2 == l / 2;
+        }
+
+
 
 
 

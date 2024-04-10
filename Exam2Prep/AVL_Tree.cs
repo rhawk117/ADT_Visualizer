@@ -229,7 +229,9 @@ namespace Exam2Prep
                 if (SubtreeBalance(ptr) <= -2) // negative balance means heavy on right side
                 {
                     if (SubtreeBalance(ptr.Right) <= 0) // children in straight line
-                        ptr = rotateRightChild(ptr);   //  rotate middle up to balance   
+                    {
+                        ptr = rotateRightChild(ptr); //  rotate middle up to balance   
+                    }
                     else
                         ptr = doubleRightChild(ptr);  // children in zig patter - needs double rotate to balance
                 }
@@ -254,10 +256,13 @@ namespace Exam2Prep
                 if (SubtreeBalance(ptr) == 2)//rebalancing
                 {
                     if (SubtreeBalance(ptr.Left) >= 0)
+                    {
                         ptr = RotateLeftChild(ptr);
-
+                    }
                     else
+                    {
                         ptr = doubleLeftChild(ptr);
+                    }
                 }
             }
             else
@@ -463,12 +468,16 @@ namespace Exam2Prep
 
 
 
+
+
+
+
+
         // in class solution 
 
         public void balance()
         {
             root = balance(root);
-
         }
         private Node balance(Node pTmp)
         {
@@ -482,10 +491,13 @@ namespace Exam2Prep
                 pTmp.Right = balance(pTmp.Right);
             }
             else if (pTmp.Right.Height == 0 && pTmp.Left.Right != null && pTmp.Left.Left != null)
+            {
                 pTmp = doubleLeftChild(pTmp);
-
+            }
             else if (pTmp.Left.Height == 0 && pTmp.Right.Left != null && pTmp.Right.Right != null)
+            {
                 pTmp = doubleRightChild(pTmp);
+            }
 
             return pTmp;
 

@@ -65,7 +65,7 @@ namespace SortAlgos
         //
         //    ShellSort Algorithm
         //
-        // ================================================================================        public static void ShellSort(List<T> aList)
+        // ================================================================================
         public static void ShellSort(List<T> aList)
         {
             int count = 0;
@@ -204,7 +204,9 @@ namespace SortAlgos
             print(aList);
 
             for (int i = N / 2; i >= 0; i--) /* BuildHeap */
+            {
                 PercDown(aList, i, N);
+            }
             Console.WriteLine("-- Max Heap is built --");
             print(aList);
             for (int i = N - 1; i > 0; i--)
@@ -225,7 +227,7 @@ namespace SortAlgos
             Console.WriteLine("-------- QuickSort ---------");
 
             QuickSort(aList, 0, aList.Count - 1, stopOn);
-            Console.WriteLine("After QuickSort but before it calls InsertionSort");
+            Console.WriteLine("[ After QuickSort but before it calls InsertionSort ]");
             print(aList);
             Console.WriteLine();
             InsertionSort(aList);
@@ -235,12 +237,24 @@ namespace SortAlgos
         {
             Console.Write("\tIn median3: {0}  {1}  {2}", aList[left], aList[(left + right) / 2], aList[right]);
             int center = (left + right) / 2;
+
+            // center < left
             if (aList[center].CompareTo(aList[left]) < 0)
+            {
                 Swap(aList, left, center);
+            }
+
+            // right < left
             if (aList[right].CompareTo(aList[left]) < 0)
+            {
                 Swap(aList, left, right);
+            }
+
+            // right < center
             if (aList[right].CompareTo(aList[center]) < 0)
+            {
                 Swap(aList, center, right);
+            }
 
             Swap(aList, center, right);
             return aList[right];
@@ -354,8 +368,12 @@ namespace SortAlgos
         {
             print(aList);
             for (int i = 1; i <= aList.Count / 2 + 1; i *= 2)
+            {
                 for (int j = i; j < aList.Count; j += 2 * i)
+                {
                     Merge(aList, j - i, j, Math.Min(j + i, aList.Count));
+                }
+            }
         }
 
         private static void Merge(List<T> aList, int start, int middle, int end)
