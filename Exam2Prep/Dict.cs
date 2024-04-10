@@ -68,7 +68,20 @@ namespace Exam2Prep
             hashString.Append("\t\t   [KEY]-[VAL]\n");
             foreach (Cell pos in table)
             {
-                hashString.AppendLine($"[ POSITION #{i} {pos} ]");
+                string original = $"[ POSITION #{i} {pos} ] STATUS = ";
+                if (pos == null)
+                {
+                    original += "< empty >";
+                }
+                else if (pos.Status == StatusType.Deleted)
+                {
+                    original += "< deleted >";
+                }
+                else
+                {
+                    original += "< active >";
+                }
+                hashString.AppendLine(original);
                 i++;
             }
             return hashString.ToString();
