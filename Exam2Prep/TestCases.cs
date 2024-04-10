@@ -71,13 +71,13 @@ namespace Exam2Prep
         {
             var curCase = CountLeaf1();
             curCase.PrintTree();
-            Console.WriteLine($" Leaf Nodes: ({curCase.CountLeafNodes()}");
+            WriteLine($" Leaf Nodes: ({curCase.CountLeafNodes()}");
             await();
 
             curCase = CountLeaf2();
             curCase.PrintTree();
             await();
-            Console.WriteLine($"Leaf Nodes: ({curCase.CountLeafNodes()}");
+            WriteLine($"Leaf Nodes: ({curCase.CountLeafNodes()}");
 
 
         }

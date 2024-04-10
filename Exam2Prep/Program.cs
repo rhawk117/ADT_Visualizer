@@ -10,10 +10,8 @@ namespace Exam2Prep
             //Utils.StartUp();
 
             // UI Master - Select an ADT to visualize in the menu itself
-
+            //Console.WriteLine($"{210 % 101}");
             RunUI();
-
-
 
         }
 
