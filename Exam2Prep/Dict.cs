@@ -132,6 +132,7 @@ namespace Exam2Prep
                         throw new ApplicationException("[ ERROR ]: Table is full");
                     }
                     index = KeyToIndex(count, aKey);
+                    Console.WriteLine($"[ Collision Occured trying Index => {index} ]");
                 }
                 Cell Item = table[index];
                 // table slot is empty (e.g. never been used), make new cell
@@ -220,6 +221,8 @@ namespace Exam2Prep
                     throw new ApplicationException("Table is full");
                 }
                 index = KeyToIndex(count, aKey);
+                Console.WriteLine($"[ Collision Occured trying Index => {index} ]");
+
             }
 
             // table slot is empty (e.g. never been used)

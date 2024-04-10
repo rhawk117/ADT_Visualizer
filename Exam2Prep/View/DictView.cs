@@ -35,6 +35,7 @@ namespace Exam2Prep.View
             {
                 WriteLine($"[ Adding {key} to the {type}... ]");
                 dict.Add(key, key);
+                enterToContinue();
                 WriteLine(dict);
                 enterToContinue();
             }
