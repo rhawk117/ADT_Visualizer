@@ -520,25 +520,30 @@ namespace Exam2Prep
         }
         // Write a method for the OurDictionary class that returns
         // the hash with the most collisions in the table.
-        public int MostCollisions()
+        public TKey MostCollisions()
         {
-            int bestCount = -1, bestHash = 0;
+            int[] collisions = new int[table.Length];
+            int max = 0;
+            TKey maxCollisionKey = default;
 
-            foreach (var cell in table)
+            for (int i = 0; i < table.Length; i++)
             {
-                if (cell == null || cell.Status != StatusType.Active)
+                if (table[i] == null || table[i].Status != StatusType.Active)
                 {
                     continue;
                 }
-                int hash = Math.Abs(cell.Key.GetHashCode() + f(0, cell.Key)) % table.Length;
-                int cols = countCollisions(cell.Key, hash);
-                if (cols > bestCount)
+
+                int hash = Math.Abs(table[i].Key.GetHashCode() + f(0, table[i].Key)) % table.Length;
+                collisions[hash]++;
+
+                if (collisions[hash] > max)
                 {
-                    bestCount = cols;
-                    bestHash = hash;
+                    max = collisions[hash];
+                    maxCollisionKey = table[i].Key;
                 }
             }
-            return bestHash;
+
+            return maxCollisionKey;
         }
         private int countCollisions(TKey aKey, int hash)
         {
@@ -568,6 +573,48 @@ namespace Exam2Prep
             }
             return keys;
         }
+
+        // Write a method for the OurDictionary Class that takes the value of
+        // a key a returns true if another cell in the Dictionary has a key that
+        // hashes to the same value as the parameter.
+        // Keep in mind the key may not be in the table and to exclude 
+
+        public bool HasMultipleHashes(TKey key)
+        {
+            int hashCode = origHash(key);
+            bool keyExists = false;
+            int count = 0;
+            foreach (Cell kv in table)
+            {
+                if (kv == null || kv.Status != StatusType.Active)
+                {
+                    continue;
+                }
+
+                int kvHash = origHash(kv.Key);
+
+                if (kv.Key.Equals(key))
+                {
+                    keyExists = true;
+                }
+
+                if (kvHash == hashCode)
+                {
+                    count++;
+                }
+
+                if (keyExists && count > 1)
+                {
+                    return true;
+                }
+            }
+            return true;
+        }
+        private int origHash(TKey key)
+        {
+            return Math.Abs(key.GetHashCode() + f(0, key)) % table.Length;
+        }
+
 
 
 

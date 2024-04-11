@@ -131,7 +131,7 @@ namespace Exam2Prep.View
         {
             WriteLine("[-] NODES TO REMOVE [-]\n");
             avl.InOrder();
-            int rmveVal = getIntput($"[-] Enter a value displayed above to Remove from the {type} or 'q' to quit: ");
+            int rmveVal = getIntput($"\n[-] Enter a value displayed above to Remove from the {type} or 'q' to quit: ");
 
             if (rmveVal != -1)
             {

@@ -173,4 +173,52 @@ namespace Exam2Prep
 
 
     }
+    public static class Dict
+    {
+        [Test]
+        public void TestHashWithMostCollisions_EmptyTable()
+        {
+            var dict = new Dict<int, string>(10);
+            Assert.Throws<KeyNotFoundException>(() => dict.HashWithMostCollisions());
+        }
+
+        [Test]
+        public void TestHashWithMostCollisions_SingleItem()
+        {
+            var dict = new Dict<int, string>(10);
+            dict.Add(1, "one");
+            Assert.AreEqual(1, dict.HashWithMostCollisions());
+        }
+
+        [Test]
+        public void TestHashWithMostCollisions_MultipleItems()
+        {
+            var dict = new Dict<int, string>(10);
+            dict.Add(1, "one");
+            dict.Add(11, "eleven");
+            dict.Add(21, "twenty-one");
+            dict.Add(31, "thirty-one");
+            dict.Add(41, "forty-one");
+            dict.Add(51, "fifty-one");
+
+            // All of these items should hash to the same value
+            Assert.AreEqual(1, dict.MostCollisions());
+        }
+
+
+        public void TestHashWithMostCollisions_DifferentCollisionResolution()
+        {
+            var dict = new Dict<int, string>(10, Dict<int, string>.CollisionRes.Linear);
+            dict.Add(1, "one");
+            dict.Add(11, "eleven");
+            dict.Add(21, "twenty-one");
+            dict.Add(31, "thirty-one");
+            dict.Add(41, "forty-one");
+            dict.Add(51, "fifty-one");
+
+            // With linear probing, the hash with the most collisions should be different
+            Assert.AreEqual(11, dict.HashWithMostCollisions());
+        }
+    }
+
 }
