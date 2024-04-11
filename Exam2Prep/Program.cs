@@ -7,10 +7,9 @@ namespace Exam2Prep
         static void Main(string[] args)
         {
             // you can comment this line after it runs for the first time (lol)
-            //Utils.StartUp();
+            Utils.StartUp();
 
             // UI Master - Select an ADT to visualize in the menu itself
-            //Console.WriteLine($"{210 % 101}");
             RunUI();
 
         }

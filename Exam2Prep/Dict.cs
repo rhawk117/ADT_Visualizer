@@ -69,6 +69,7 @@ namespace Exam2Prep
             foreach (Cell pos in table)
             {
                 string original = $"[ POSITION #{i} {pos} ] STATUS = ";
+
                 if (pos == null)
                 {
                     original += "< empty >";
@@ -516,6 +517,56 @@ namespace Exam2Prep
                 }
             }
             return total;
+        }
+        // Write a method for the OurDictionary class that returns
+        // the hash with the most collisions in the table.
+        public int MostCollisions()
+        {
+            int bestCount = -1, bestHash = 0;
+
+            foreach (var cell in table)
+            {
+                if (cell == null || cell.Status != StatusType.Active)
+                {
+                    continue;
+                }
+                int hash = Math.Abs(cell.Key.GetHashCode() + f(0, cell.Key)) % table.Length;
+                int cols = countCollisions(cell.Key, hash);
+                if (cols > bestCount)
+                {
+                    bestCount = cols;
+                    bestHash = hash;
+                }
+            }
+            return bestHash;
+        }
+        private int countCollisions(TKey aKey, int hash)
+        {
+            int count = 0;
+            while (table[hash] != null && table[hash].Status == StatusType.Active)
+            {
+                if (count == table.Length)
+                {
+                    return count;
+                }
+                hash = Math.Abs(aKey.GetHashCode() + f(count, aKey)) % table.Length;
+                count++;
+            }
+            return count;
+        }
+
+        public List<TKey> GetKeys()
+        {
+            List<TKey> keys = new List<TKey>();
+            foreach (var cell in table)
+            {
+                if (cell == null || cell.Status != StatusType.Active)
+                {
+                    continue;
+                }
+                keys.Add(cell.Key);
+            }
+            return keys;
         }
 
 

@@ -34,6 +34,19 @@ namespace Exam2Prep
         }
 
         private Node root;
+
+        public T rootData
+        {
+            get
+            {
+                if (root == null)
+                {
+                    return default;
+                }
+                return root.Data;
+            }
+        }
+
         public AVL() => root = null;
 
         public void Clear() => root = null;
@@ -103,7 +116,7 @@ namespace Exam2Prep
          */
         private Node RotateLeftChild(Node pTop)
         {
-            Console.WriteLine("Rotating Left " + pTop.Data);
+            Console.WriteLine("Rotating Left Child -> " + pTop.Data);
             Node pLeft = pTop.Left;
             pTop.Left = pLeft.Right;
             pLeft.Right = pTop;
@@ -125,6 +138,7 @@ namespace Exam2Prep
 
         private Node rotateRightChild(Node pTop)
         {
+            Console.WriteLine("Right Child Rotate -> " + pTop.Data);
             Node pRight = pTop.Right;
             pTop.Right = pRight.Left;
             pRight.Left = pTop;
@@ -138,13 +152,14 @@ namespace Exam2Prep
 
         private Node doubleLeftChild(Node pTop)
         {
+            Console.WriteLine($"Double Left Rotate on {pTop.Data}");
             pTop.Left = rotateRightChild(pTop.Left);
             return RotateLeftChild(pTop);
         }
 
         private Node doubleRightChild(Node pTop)
         {
-            Console.WriteLine("Double Rotating Right " + pTop.Data);
+            Console.WriteLine("Rotating Right Child To Left-> " + pTop.Right.Data);
             pTop.Right = RotateLeftChild(pTop.Right);
             return rotateRightChild(pTop);
         }
@@ -466,8 +481,23 @@ namespace Exam2Prep
         }
 
 
+        public bool areEqual(AVL<T> other)
+        {
+            return areEqual(other.root, root);
+        }
 
-
+        public bool areEqual(Node oPtr, Node thisPtr)
+        {
+            if (oPtr == null || thisPtr == null)
+            {
+                return oPtr == thisPtr;
+            }
+            else if (!oPtr.Data.Equals(thisPtr.Data))
+            {
+                return false;
+            }
+            return areEqual(oPtr.Left, thisPtr.Left) && areEqual(oPtr.Right, thisPtr.Right);
+        }
 
 
 
@@ -503,13 +533,82 @@ namespace Exam2Prep
 
         }
 
+        public void PostOrder()
+        {
+            Console.WriteLine("[ Performing a post order traversal of the AVL Tree... ]\n");
+            postOrder(root);
+        }
+        private void postOrder(Node ptr)
+        {
+            if (ptr == null)
+            {
+                return;
+            }
+            postOrder(ptr.Left);
+            postOrder(ptr.Right);
+            Console.Write($"{ptr.Data}, ");
+        }
+        public void PreOrder()
+        {
+            Console.WriteLine("[ Performing a pre order traversal of the AVL Tree.. ]");
+            preOrder(root);
+        }
+        private void preOrder(Node ptr)
+        {
+            if (ptr == null)
+            {
+                return;
+            }
+            Console.WriteLine($"{ptr.Data},");
+            preOrder(ptr.Left);
+            preOrder(ptr.Right);
+        }
+        public void InOrder()
+        {
+            Console.WriteLine("[ Performing in-order traversal of the AVL Tree.. ]");
+            inOrder(root);
+        }
+        private void inOrder(Node ptr)
+        {
+            if (ptr == null)
+            {
+                return;
+            }
+            inOrder(ptr.Left);
+            Console.Write($"{ptr.Data}, ");
+            inOrder(ptr.Right);
+        }
 
 
 
 
 
         // Tree Printer Class / Visualization
-        public void Prints() => TreePrinter.Print(root);
+        public void Prints()
+        {
+            try
+            {
+                TreePrinter.Print(root);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(@"
+                An Exception was thrown in the AVL Tree Prints Method 
+                which has a tendancy to throw randomly. It works great
+                when it does work however it isn't perfect :/
+
+                Your changes to tree have occured if you inserted
+                however if you are removing, it likely did not.
+                
+                I apologize for the inconvience and I'm working to 
+                fix the issue.
+
+                ");
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine("[ Press ENTER to Continue.. ]");
+                Console.ReadLine();
+            }
+        }
         public void Prints(Node subRoot) => TreePrinter.Print(subRoot);
 
         public static class TreePrinter
@@ -528,7 +627,11 @@ namespace Exam2Prep
             public static void Print(Node root, int topMargin = 2, int leftMargin = 2)
             {
                 if (root == null) return;
-                int rootTop = Console.CursorTop + topMargin;
+
+                int rootTop = 0;
+                int consoleHeight = Console.WindowHeight;
+                int consoleWidth = Console.WindowWidth;
+
                 var last = new List<NodeInfo>();
                 var next = root;
                 for (int level = 0; next != null; level++)
@@ -561,7 +664,11 @@ namespace Exam2Prep
                     next = next.Left ?? next.Right;
                     for (; next == null; item = item.Parent)
                     {
-                        Print(item, rootTop + 2 * level);
+                        int currentTop = rootTop + 2 * level;
+                        if (currentTop < consoleHeight)
+                        {
+                            Print(item, currentTop);
+                        }
                         if (--level < 0) break;
                         if (item == item.Parent.Left)
                         {
@@ -577,7 +684,8 @@ namespace Exam2Prep
                         }
                     }
                 }
-                Console.SetCursorPosition(0, rootTop + 2 * last.Count - 1);
+
+                Console.SetCursorPosition(0, Math.Min(rootTop + 2 * last.Count - 1, consoleHeight - 1));
             }
 
             private static void Print(NodeInfo item, int top)
@@ -600,9 +708,12 @@ namespace Exam2Prep
 
             private static void Print(string s, int top, int left, int right = -1)
             {
-                Console.SetCursorPosition(left, top);
-                if (right < 0) right = left + s.Length;
-                while (Console.CursorLeft < right) Console.Write(s);
+                if (top >= 0 && top < Console.WindowHeight)
+                {
+                    Console.SetCursorPosition(left, top);
+                    if (right < 0) right = left + s.Length;
+                    while (Console.CursorLeft < right && Console.CursorLeft < Console.WindowWidth) Console.Write(s);
+                }
             }
 
             private static void SwapColors()
@@ -612,7 +723,6 @@ namespace Exam2Prep
                 Console.BackgroundColor = color;
             }
         }
-
     }
 }
 

@@ -116,20 +116,30 @@ namespace Exam2Prep.View
         {
             int addVal = getIntput($"[ Enter a value to add to the {type} or q to go back: ");
 
-            if (addVal != -1) add(addVal);
-
-            else Run();
+            if (addVal != -1)
+            {
+                add(addVal);
+            }
+            else
+            {
+                Add();
+            }
         }
 
         public void Add()
         {
             char choice;
             WriteLine(@"
-                [ Add Options ]
-            
-              [ s ] Add Single Item
-              [ m ] Add Multiple Items
-              [ q ] Go Back
+
+            *==============================*
+            |     [ Add Options ]          |
+            |                              |
+            |  [ s ] Add Single Item       |
+            |  [ m ] Add Multiple Items    |
+            |  [ q ] Go Back               |
+            |                              |
+            *==============================*
+
             ");
             choice = char.ToLower(ReadKey().KeyChar);
             if (choice != 'q') handleAdd(choice);
@@ -145,6 +155,10 @@ namespace Exam2Prep.View
 
                 case 'm':
                     MultipleAdd();
+                    break;
+
+                default:
+                    WriteLine("[ ! ] Select a Valid Menu Option [ ! ]");
                     break;
             }
             Clear();
@@ -174,7 +188,6 @@ namespace Exam2Prep.View
                 }
                 WriteLine("[ Action Complete ]");
                 ResetColor();
-                enterToContinue();
             }
         }
         private void multiAdd(List<int> additions)
@@ -192,13 +205,14 @@ namespace Exam2Prep.View
         // funny pun
         public int getIntput(string prompt)
         {
-            Clear();
             WriteLine(prompt);
             int val;
             string input = ReadLine();
 
-            if (input.ToLower() == "q") return -1;
-
+            if (input.ToLower() == "q")
+            {
+                return -1;
+            }
             else if (!int.TryParse(input, out val))
             {
                 WriteLine("[ Input an integer value type q if you want to exit ]");
@@ -206,8 +220,6 @@ namespace Exam2Prep.View
             }
             return val;
         }
-
-
 
     }
     public static class Adder
@@ -248,19 +260,21 @@ namespace Exam2Prep.View
                            .Where(part => !string.IsNullOrEmpty(part))
                            .Select(part =>
                            {
-                               bool success = int.TryParse(part, out int parsedNumber);
-                               if (!success)
-                                   throw new ArgumentException(
-                                   $"'{part}' is not a valid integer.");
+                               bool attempt = int.TryParse(part, out int parsedNumber);
+                               if (attempt == false) throw new ArgumentException(
+                                   $"'{part}' is not a valid integer."
+                                );
                                return parsedNumber;
                            })
                            .ToList();
             if (userList.ToHashSet().Count != userList.Count)
             {
+                ForegroundColor = ConsoleColor.Red;
                 throw new ArgumentException("[ Do not use duplicate values! ]");
             }
             if (userList.Count < 5)
             {
+                ForegroundColor = ConsoleColor.Red;
                 throw new ArgumentException("[!] Collection provided is less than 5 numbers... [!]");
             }
             return userList;

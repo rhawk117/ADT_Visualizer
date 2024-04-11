@@ -9,7 +9,7 @@ namespace Exam2Prep.View
 {
     public class AVLView : View
     {
-        public AVL<int> avl;
+        public AVL<int> avl = new AVL<int>();
 
         public AVLView(AVL<int> avl = null) : base("AVL Tree")
         {
@@ -40,51 +40,137 @@ namespace Exam2Prep.View
         {
             try
             {
+                Clear();
                 WriteLine($"[ PRE INSERTION >> {val} ]\n");
-                avl.Prints();
-                WriteLine($"[ After Adding {val} to the {type}... ]");
-                avl.Insert(val);
-                avl.Prints();
-                WriteLine();
+                safePrint();
                 enterToContinue();
+                WriteLine($"[ After Adding {val} to the {type}... ]");
+
+                avl.Insert(val);
+                safePrint();
+                WriteLine();
             }
             catch (ApplicationException)
             {
                 WriteLine($"[ {val} already exists in the AVL Tree. AVL Trees are comprised of unique values ]");
                 error();
             }
+            catch (Exception e)
+            {
+                WriteLine($"[!] Unhandled -> {e.Message} <- occured while inserting in the AVL");
+
+            }
+            finally
+            {
+                enterToContinue();
+            }
         }
 
         public override void Remove()
         {
-            emptyCheck();
+            if (avl.IsEmpty())
+            {
+                WriteLine("[ Cannot Remove on an Empty AVL ]");
+                enterToContinue();
+                return;
+            }
+            Clear();
+            char c;
+            WriteLine(@"
 
-            int rmveVal = getIntput($"[-] Enter a value to Remove from the {type} or q to quit: ");
+            *===============================*
+            |    [ Select an Option ]       |
+            |                               |
+            | [ r ] Remove Root             |
+            | [ i ] Remove a Node           |
+            | [ q ] Go Back                 |
+            |                               |
+            *===============================*
 
-            if (rmveVal != -1) remove(rmveVal);
+            ");
+            c = char.ToLower(ReadKey().KeyChar);
+
+            if (c != 'q')
+            {
+                handleRemove(c);
+            }
         }
 
-        protected override void doClear()
+        private void handleRemove(char c)
         {
-            avl.Clear();
+            switch (c)
+            {
+                case 'r':
+                    rmveRoot();
+                    break;
+                case 'i':
+                    rmveNode();
+                    break;
+                default:
+                    WriteLine("[ Select a Valid Menu Option ]");
+                    break;
+            }
+            enterToContinue();
+            Remove();
+        }
+        private void rmveRoot()
+        {
+            int rVal = avl.rootData;
+
+            if (rVal == default)
+            {
+                WriteLine("[ AVL returned 0 for root (i.e root is null).. ]\n [ Remove cannot be performed.. ]");
+            }
+            else
+            {
+                remove(rVal);
+            }
         }
 
+        private void rmveNode()
+        {
+            WriteLine("[-] NODES TO REMOVE [-]\n");
+            avl.InOrder();
+            int rmveVal = getIntput($"[-] Enter a value displayed above to Remove from the {type} or 'q' to quit: ");
+
+            if (rmveVal != -1)
+            {
+                remove(rmveVal);
+            }
+        }
+
+        protected void safePrint()
+        {
+            enterToContinue();
+            Clear();
+            avl.Prints();
+        }
+
+        protected override void doClear() => avl.Clear();
         protected override void remove(int val)
         {
             try
             {
                 WriteLine($"[ PRE REMOVAL >> {val} ]\n");
-                avl.Prints();
+                safePrint();
+                enterToContinue();
                 WriteLine($"[ Removing {val} from the {type}... ]");
                 avl.Remove(val);
-                avl.Prints();
-                enterToContinue();
+                safePrint();
             }
             catch (ApplicationException)
             {
                 WriteLine($"[ {val} does not exist in the AVL Tree. ]");
-                error();
             }
+            catch (Exception e)
+            {
+                WriteLine($"[ ! ] Unhandled -> {e.Message} <- exception in the AVL Tree...");
+            }
+            finally
+            {
+                ResetColor();
+            }
+
         }
 
         protected override void ViewADT()
@@ -93,43 +179,53 @@ namespace Exam2Prep.View
 
             Clear();
 
+            char k;
+
             WriteLine($@"
                 |==========================================|
                 |      [ Select an option to view ]        |
                 |                                          |
-                |    [ t ] View Tree                       |
-                |    [ q ] Go Back                         |
+                |     [ t ] View Tree                      |
+                |     [ i ] In Order                       |
+                |     [ b ] Pre Order                      |
+                |     [ p ] Post Order                     |
+                |     [ q ] Go Back                        |
                 |==========================================|
             ");
-            char k = ReadKey().KeyChar;
-
-            if (k != 'q') handleViewer(k);
+            k = char.ToLower(ReadKey().KeyChar);
+            if (k != 'q')
+            {
+                handleViewer(k);
+            }
         }
 
 
         private void handleViewer(char c)
         {
-            Clear();
+            switch (c)
+            {
+                case 't':
+                    avl.Prints();
+                    break;
 
-            if (c == 't') avl.Prints();
+                case 'i':
+                    avl.InOrder();
+                    break;
 
-            else WriteLine("[ Select a valid menu option ]");
+                case 'b':
+                    avl.PreOrder();
+                    break;
 
+                case 'p':
+                    avl.PostOrder();
+                    break;
+
+                default:
+                    WriteLine("[ ! ] Select a valid menu option [ ! ]");
+                    break;
+            }
             enterToContinue();
             ViewADT();
         }
-
-        public void Clear()
-        {
-            avl.Clear();
-        }
-
-
-
-
-
-
-
-
     }
 }

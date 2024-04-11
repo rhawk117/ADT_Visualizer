@@ -116,16 +116,15 @@ namespace Exam2Prep
             cur.PrintTree();
             await();
             cur.DecreasePriority(1, 6);
-            Console.WriteLine("POST Method Call");
+            WriteLine("POST Method Call");
             cur.PrintTree();
 
             cur = CountLeaf2();
             cur.PrintTree();
             await();
             cur.DecreasePriority(16, 42);
-            Console.WriteLine("POST Method Call");
+            WriteLine("POST Method Call");
             cur.PrintTree();
-
         }
 
 
@@ -133,7 +132,7 @@ namespace Exam2Prep
         {
             int left, right;
 
-            var curCase = MakeQ(7);
+            PriorQ<int, int> curCase = MakeQ(7);
             curCase.PrintTree();
             ReadLine();
             left = 6; right = 7;
@@ -145,13 +144,30 @@ namespace Exam2Prep
             WriteLine($"Are siblings => {left}(l) & {right}(r) {curCase.AreSiblings(left, right)}");
 
 
-
-
-
-
+            curCase = MakeQ(11);
+            left = 1; right = 11;
+            curCase.PrintTree(); ReadLine();
+            WriteLine($"Are siblings => {left}(l) & {right}(r) {curCase.AreSiblings(left, right)}");
         }
 
+        public static void areEq()
+        {
+            AVL<int> a = new AVL<int>();
+            AVL<int> b = new AVL<int>();
+            addBoth(a, b, 100);
+            addBoth(a, b, 75);
+            addBoth(a, b, 200);
+            addBoth(a, b, 45);
+            //a.Insert(26);
 
+            Write($"Are Equal => {a.areEqual(b)}");
+        }
+
+        private static void addBoth(AVL<int> a, AVL<int> b, int val)
+        {
+            a.Insert(val);
+            b.Insert(val);
+        }
 
 
 

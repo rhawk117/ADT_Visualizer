@@ -37,7 +37,6 @@ namespace Exam2Prep.View
                 dict.Add(key, key);
                 enterToContinue();
                 WriteLine(dict);
-                enterToContinue();
             }
             catch (ArgumentException)
             {
@@ -49,6 +48,14 @@ namespace Exam2Prep.View
                 WriteLine("[ Something went horribly Wrong ]");
                 error();
             }
+            catch (Exception e)
+            {
+                WriteLine($"Unhandled -> {e.Message} <- Occured in the Hash Map");
+            }
+            finally
+            {
+                enterToContinue();
+            }
         }
 
         protected override void doClear()
@@ -59,11 +66,19 @@ namespace Exam2Prep.View
 
         public override void Remove()
         {
-            int keyToRmve = getIntput($"[-] Enter a key to Remove from the {type} or q to quit: ");
+            WriteLine("[ KEYS TO REMOVE ]");
+            foreach (int k in dict.GetKeys())
+            {
+                Write($"{k}, ");
+            }
+            int keyToRmve = getIntput($"\n[-] Enter a key to Remove from the {type} or q to quit: ");
 
             if (keyToRmve != -1) remove(keyToRmve);
 
-            else Run();
+            else
+            {
+                Run();
+            }
         }
 
 
@@ -111,7 +126,7 @@ namespace Exam2Prep.View
             {
                 strategy = selectCollisonStrategy();
             }
-            WriteLine("[i] Collision strategy has been set (default double).\n[ Press ENTER ]");
+            WriteLine("[i] Collision strategy has been set, (default is double).\n[ Press ENTER ]");
             ReadLine();
 
             return new Dict<int, int>(size, strategy);
@@ -120,6 +135,8 @@ namespace Exam2Prep.View
         private static bool confirmAction(string attr)
         {
             Write($@"
+
+          ==================={attr.ToUpper()}=====================
                 [ ? ] Select a {attr} for the Dictionary [ ? ]
                            [ y (yes) \ n (no) ]
                         
