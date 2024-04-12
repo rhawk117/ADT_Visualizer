@@ -499,8 +499,49 @@ namespace Exam2Prep
             return areEqual(oPtr.Left, thisPtr.Left) && areEqual(oPtr.Right, thisPtr.Right);
         }
 
+        // Add a method to the OurAVLTree Class that takes the data of a node
+        // if the Data exists in the AVL Tree print the rest of the tree from
+        // the Node.
 
+        public void PrintDown(T search)
+        {
+            Node ptr = findTarget(root, search);
+            if(ptr == null)
+            {
+                return;
+            }
+            printDown(ptr);
+        }
+        private Node findTarget(Node ptr, T search)
+        {
+            if(ptr == null)
+            {
+                return null;
+            }
+            else if(search.CompareTo(ptr.Data) <  0)
+            {
+                return findTarget(ptr.Left, search);
+            }
+            else if(search.CompareTo(ptr.Data) > 0)
+            {
+                return findTarget(ptr.Right, search);
+            }
+            else
+            {
+                return ptr;
+            }
+        }
 
+        private void printDown(Node ptr)
+        {
+            if(ptr == null)
+            {
+                return;
+            }
+            Console.Write($"{ptr.Data}");
+            printDown(ptr.Left);
+            printDown(ptr.Right);
+        }
 
 
         // in class solution 

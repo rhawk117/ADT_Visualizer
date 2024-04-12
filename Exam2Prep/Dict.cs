@@ -542,7 +542,6 @@ namespace Exam2Prep
                     maxCollisionKey = table[i].Key;
                 }
             }
-
             return maxCollisionKey;
         }
         private int countCollisions(TKey aKey, int hash)
@@ -576,8 +575,9 @@ namespace Exam2Prep
 
         // Write a method for the OurDictionary Class that takes the value of
         // a key a returns true if another cell in the Dictionary has a key that
-        // hashes to the same value as the parameter.
-        // Keep in mind the key may not be in the table and to exclude 
+        // hashes to the same value as the key passed into the method.
+        // Keep in mind the key may not be in the dictionary and to exclude 
+        // empty and deleted cells
 
         public bool HasMultipleHashes(TKey key)
         {
@@ -608,7 +608,7 @@ namespace Exam2Prep
                     return true;
                 }
             }
-            return true;
+            return false;
         }
         private int origHash(TKey key)
         {

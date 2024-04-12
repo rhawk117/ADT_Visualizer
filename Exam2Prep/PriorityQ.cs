@@ -457,6 +457,36 @@ namespace OurPriorityQueue
             return r / 2 == l / 2;
         }
 
+        // Write a method for the OurPriorityQueue class 
+        // that takes a priority as the parameter and
+        // returns the number of children the Cell with this has. 
+        // It should return -1 if the priority does not exist 
+
+        public int CountChildren(TPriority parent)
+        {
+            int pos = -1;
+            for(int i = 1; i <= count && pos == -1; i++)
+            {
+                if (table[i].Priority.Equals(parent))
+                {
+                    pos = i;
+                }
+            }
+            if(pos == -1)
+            {
+                return -1;
+            }
+            return countChildren(pos) - 1;
+        }
+        private int countChildren(int index)
+        {
+            if(index > count)
+            {
+                return 0;
+            }
+            return 1 + countChildren(index * 2) + countChildren(index * 2 + 1);
+        }
+
 
 
 
