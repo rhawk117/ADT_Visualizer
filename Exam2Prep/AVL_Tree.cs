@@ -266,7 +266,6 @@ namespace Exam2Prep
             else if (ptr.Left != null && ptr.Right != null) // Two children
             {
                 ptr.Data = FindMin(ptr.Right);
-                Prints();
                 Remove(ptr.Data, ref ptr.Right);
                 if (SubtreeBalance(ptr) == 2)//rebalancing
                 {
@@ -324,7 +323,7 @@ namespace Exam2Prep
             UpdateHeight(ptr.Left);
             UpdateHeight(ptr.Right);
 
-            // Case 1
+            // Case 1 - Null height => 0
             if (ptr == null)
                 return 0;
 
@@ -404,7 +403,6 @@ namespace Exam2Prep
             // when we fall off or a node wont need to be balanced
             if (subTreePtr == null) return;
 
-
             Node LeftChild = subTreePtr.Left, RightChild = subTreePtr.Right;
             if (RightChild == null && LeftChild == null) return;
 
@@ -479,18 +477,13 @@ namespace Exam2Prep
                 }
             }
         }
-
-
-        public bool areEqual(AVL<T> other)
-        {
-            return areEqual(other.root, root);
-        }
-
+        public bool areEqual(AVL<T> other) => areEqual(other.root, root);
         public bool areEqual(Node oPtr, Node thisPtr)
         {
+            // Lazy Check
             if (oPtr == null || thisPtr == null)
             {
-                return oPtr == thisPtr;
+                return oPtr == thisPtr; // Check if both are null, if not they are not equal
             }
             else if (!oPtr.Data.Equals(thisPtr.Data))
             {
@@ -499,45 +492,46 @@ namespace Exam2Prep
             return areEqual(oPtr.Left, thisPtr.Left) && areEqual(oPtr.Right, thisPtr.Right);
         }
 
-        // Add a method to the OurAVLTree Class that takes the data of a node
-        // if the Data exists in the AVL Tree print the rest of the tree from
+        // Add a method to the OurAVLTree Class that takes in possible data of a node
+        // in the AVL Tree.
+
+        // - If the Data exists in the AVL Tree print the rest of the subtree from
         // the Node.
 
         public void PrintDown(T search)
         {
             Node ptr = findTarget(root, search);
-            if(ptr == null)
+            if (ptr == null)
             {
+                Console.WriteLine($"Node with value {search} was not found in the AVL...");
                 return;
             }
             printDown(ptr);
         }
         private Node findTarget(Node ptr, T search)
         {
-            if(ptr == null)
+            if (ptr == null)
             {
                 return null;
             }
-            else if(search.CompareTo(ptr.Data) <  0)
+            else if (search.CompareTo(ptr.Data) < 0)
             {
                 return findTarget(ptr.Left, search);
             }
-            else if(search.CompareTo(ptr.Data) > 0)
+            else if (search.CompareTo(ptr.Data) > 0)
             {
                 return findTarget(ptr.Right, search);
             }
             else
             {
-                return ptr;
+                return ptr; // Found it 
             }
         }
 
         private void printDown(Node ptr)
         {
-            if(ptr == null)
-            {
-                return;
-            }
+            if (ptr == null) return;
+
             Console.Write($"{ptr.Data}");
             printDown(ptr.Left);
             printDown(ptr.Right);
@@ -545,6 +539,25 @@ namespace Exam2Prep
 
 
         // in class solution 
+
+        // Add a method to the OurAVL Tree that returns a list of 
+        // Nodes that are 'almost' unbalanced meaning that a rotation
+        // occur soon 
+
+
+        // Hint: Almost unbalanced Nodes have a
+        // Balance Factor of either 1 or -1. 
+        // Use the 'GetHeight' Method to assist
+
+
+
+
+
+
+
+
+
+
 
         public void balance()
         {
@@ -569,9 +582,7 @@ namespace Exam2Prep
             {
                 pTmp = doubleRightChild(pTmp);
             }
-
             return pTmp;
-
         }
 
         public void PostOrder()
@@ -579,12 +590,11 @@ namespace Exam2Prep
             Console.WriteLine("[ Performing a post order traversal of the AVL Tree... ]\n");
             postOrder(root);
         }
+        // Left Call, Right Call, Print
         private void postOrder(Node ptr)
         {
-            if (ptr == null)
-            {
-                return;
-            }
+            if (ptr == null) return;
+
             postOrder(ptr.Left);
             postOrder(ptr.Right);
             Console.Write($"{ptr.Data}, ");
@@ -594,13 +604,14 @@ namespace Exam2Prep
             Console.WriteLine("[ Performing a pre order traversal of the AVL Tree.. ]");
             preOrder(root);
         }
+        // Print, Left Call, Right Call
         private void preOrder(Node ptr)
         {
             if (ptr == null)
             {
                 return;
             }
-            Console.WriteLine($"{ptr.Data},");
+            Console.Write($"{ptr.Data},");
             preOrder(ptr.Left);
             preOrder(ptr.Right);
         }
@@ -620,10 +631,6 @@ namespace Exam2Prep
             inOrder(ptr.Right);
         }
 
-
-
-
-
         // Tree Printer Class / Visualization
         public void Prints()
         {
@@ -634,6 +641,7 @@ namespace Exam2Prep
             catch (Exception ex)
             {
                 Console.WriteLine(@"
+
                 An Exception was thrown in the AVL Tree Prints Method 
                 which has a tendancy to throw randomly. It works great
                 when it does work however it isn't perfect :/

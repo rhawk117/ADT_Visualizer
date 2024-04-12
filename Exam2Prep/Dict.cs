@@ -439,7 +439,7 @@ namespace Exam2Prep
         public void TwoMaxKeys()
         {
             TKey absMax = default, scndMax = default;
-            bool haveItem = false;
+            bool haveKey = false;
 
             foreach (var item in table)
             {
@@ -447,9 +447,9 @@ namespace Exam2Prep
                 {
                     continue;
                 }
-                else if (!haveItem)
+                else if (!haveKey)
                 {
-                    haveItem = true;
+                    haveKey = true;
                     absMax = item.Key;
                 }
                 else if (item.Key.CompareTo(absMax) > 0)
@@ -462,7 +462,7 @@ namespace Exam2Prep
                     scndMax = item.Key;
                 }
             }
-            if (haveItem)
+            if (haveKey)
             {
                 Console.WriteLine($"First: {absMax} Second: {scndMax}");
             }
@@ -511,7 +511,7 @@ namespace Exam2Prep
 
                 int hash = Math.Abs(table[i].Key.GetHashCode() + f(0, table[i].Key)) % table.Length;
 
-                // hash value is not equal to the index it's located at (i.e collision
+                // hash value is not equal to the index it's located at (i.e collision)
                 if (hash != i)
                 {
                     total++;
@@ -539,13 +539,14 @@ namespace Exam2Prep
                     continue;
                 }
 
+                // Get Hash of Key
                 int hash = Math.Abs(kV.Key.GetHashCode() + f(0, kV.Key)) % table.Length;
                 collisions[hash]++;
 
                 if (collisions[hash] > max)
                 {
-                    max = collisions[hash];
-                    maxKey = table[hash].Key;
+                    max = collisions[hash]; // Update Max
+                    maxKey = table[hash].Key; // Update to Original Key
                 }
             }
             return max > 1 ? maxKey : default;

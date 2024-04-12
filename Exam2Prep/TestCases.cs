@@ -42,8 +42,8 @@ namespace Exam2Prep
         public static void TwoMaxes()
         {
             var curCase = TwoMaxes1();
-            Console.WriteLine(curCase);
-            Console.WriteLine("Expected output 8, 9");
+            WriteLine(curCase);
+            WriteLine("Expected output 8, 9");
 
             await();
 
@@ -52,15 +52,15 @@ namespace Exam2Prep
             await();
 
             curCase = TwoMaxes2();
-            Console.WriteLine(curCase);
-            Console.WriteLine("Expected output: 19, 20");
+            WriteLine(curCase);
+            WriteLine("Expected output: 19, 20");
             await();
 
             curCase.TwoMaxKeys();
 
             curCase = TwoMaxes3();
-            Console.WriteLine(curCase);
-            Console.WriteLine("Expected output: 1, 0");
+            WriteLine(curCase);
+            WriteLine("Expected output: 1, 0");
             await();
             curCase.TwoMaxKeys();
         }
@@ -167,6 +167,41 @@ namespace Exam2Prep
         {
             a.Insert(val);
             b.Insert(val);
+        }
+
+        public static void CountChildren()
+        {
+            var cur = MakeQ(8);
+            cur.PrintTree();
+            await();
+            int of = 2;
+            WriteLine($"Children Count of {of} = {cur.CountChildren(of)}");
+
+        }
+
+        public static void TryMerge()
+        {
+            var thisCur = MakeQ(8);
+            Console.WriteLine("Merging into...");
+            thisCur.PrintTree();
+            WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            Random random = new Random();
+            var otherQ = new PriorQ<int, int>();
+            for (int i = 0; i <= 10; i++)
+            {
+                int entry = random.Next(1, 28);
+                otherQ.Add(entry, entry);
+            }
+
+            Console.WriteLine("Other Q");
+            otherQ.PrintTree();
+            WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            thisCur.TryMerge(otherQ);
+            thisCur.PrintTree();
+            WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+
         }
 
 

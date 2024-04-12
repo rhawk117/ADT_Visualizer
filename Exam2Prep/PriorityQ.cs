@@ -134,6 +134,7 @@ namespace OurPriorityQueue
             {
                 child = hole * 2;
                 TPriority parent = table[child].Priority;
+                // if right child is less than parent
                 if (child != count && table[child + 1].Priority.CompareTo(parent) < 0)
                 {
                     child++;
@@ -373,14 +374,14 @@ namespace OurPriorityQueue
                 throw new Exception();
             }
             int pos = -1;
-            for (int i = 1; i <= count && pos == -1; i++)
+            for (int i = 2; i <= count && pos == -1; i++)
             {
                 if (table[i].Priority.Equals(ChildP))
                 {
                     pos = i;
                 }
             }
-            if (pos == -1 || pos == 1)
+            if (pos == -1)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -465,14 +466,14 @@ namespace OurPriorityQueue
         public int CountChildren(TPriority parent)
         {
             int pos = -1;
-            for(int i = 1; i <= count && pos == -1; i++)
+            for (int i = 1; i <= count && pos == -1; i++)
             {
                 if (table[i].Priority.Equals(parent))
                 {
                     pos = i;
                 }
             }
-            if(pos == -1)
+            if (pos == -1)
             {
                 return -1;
             }
@@ -480,14 +481,61 @@ namespace OurPriorityQueue
         }
         private int countChildren(int index)
         {
-            if(index > count)
+            if (index > count)
             {
                 return 0;
             }
             return 1 + countChildren(index * 2) + countChildren(index * 2 + 1);
         }
+        // Write a method for the OurPriorityQueue Class that takes the parameter of another
+        // PriorityQueue and returns true if they are equal to one another. Two Priority Queues
+        // are considered equal if the priorities at each index in both queues are identical to 
+        // one another
 
+        public bool areEqual(PriorQ<TPriority, TValue> other)
+        {
+            if (count != other.count)
+            {
+                return false;
+            }
 
+            int cur = 1;
+            for (; cur <= count; cur++)
+            {
+                if (table[cur].Priority.Equals(other.table[cur].Priority) == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Add a Method to the OurPriorityQueue Class that takes in the
+        // value of another Priority Queue and merges it with the Priority
+        // Queue calling the method. Your method must maintain the order of
+        // the Queue and return True if the operation is successful.
+
+        public bool TryMerge(PriorQ<TPriority, TValue> other)
+        {
+            if (other == null || other.IsEmpty() || other.Count + count > table.Length - 1)
+            {
+                return false;
+            }
+
+            int otherCur = 1;
+            while (otherCur <= other.count)
+            {
+                int hole = ++count;
+                TPriority newP = other.table[otherCur].Priority;
+                for (; hole > 1 && newP.CompareTo(table[hole / 2].Priority) < 0; hole /= 2)
+                {
+                    table[hole] = table[hole / 2];
+                }
+                table[hole] = other.table[otherCur];
+                otherCur++;
+            }
+            return true;
+        }
 
 
 

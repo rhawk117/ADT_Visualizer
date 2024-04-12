@@ -7,10 +7,12 @@ namespace Exam2Prep
         static void Main(string[] args)
         {
             // you can comment this line after it runs for the first time (lol)
-            Utils.StartUp();
+            //Utils.StartUp();
 
             // UI Master - Select an ADT to visualize in the menu itself
-            RunUI();
+            //RunUI();
+
+            runTest();
 
         }
 
@@ -34,7 +36,10 @@ namespace Exam2Prep
             // DictView dv = new DictView();
             // dv.Run();
         }
-
+        static void runTest()
+        {
+            TestCases.TryMerge();
+        }
 
     }
 }

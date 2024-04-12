@@ -23,11 +23,7 @@ namespace Exam2Prep.View
             }
         }
 
-        private void error()
-        {
-            WriteLine("[ Returning to Main Menu... ]");
-        }
-
+        private void error() => WriteLine("[ Returning to Main Menu... ]");
 
         protected override void add(int key)
         {
@@ -135,7 +131,6 @@ namespace Exam2Prep.View
         private static bool confirmAction(string attr)
         {
             Write($@"
-
           ==================={attr.ToUpper()}=====================
                 [ ? ] Select a {attr} for the Dictionary [ ? ]
                            [ y (yes) \ n (no) ]
@@ -161,6 +156,8 @@ namespace Exam2Prep.View
         private static Dict<int, int>.CollisionRes selectCollisonStrategy()
         {
             WriteLine(@"
+            =================================================================
+                        
                 [ Before Continuing, Select a Collision Strategy ]
                     [ The Table Size is always a Prime Number ]
                        ( hash(key) + f(i) ) % <table_size> )                
@@ -168,6 +165,8 @@ namespace Exam2Prep.View
                 [ l ] Linear Probing =>   where f(i) = i++
                 [ q ] Quadratic Probing =>  where f(i) = (i * i)
                 [ d ] Double Hashing => where f(i) = (hash(key) + i) % (<table_size> - 1) + 1
+
+            ==================================================================
                 
             ");
             char key = ReadKey().KeyChar;
