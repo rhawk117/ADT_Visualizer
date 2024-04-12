@@ -470,8 +470,8 @@ namespace Exam2Prep
         }
 
         // Add a method called 'TryGetKey' to the OurDictionary class that accepts an item and, 
-        // if the item is in the table, returns the item’s key value thru the second argument
-        // with the 'out' key word.
+        // if the item is in the table, the method returns the item’s key value thru
+        // the second argument with the 'out' key word.
 
         // Keep in mind that the key value is not necessarily the position in the array.
 
@@ -494,16 +494,16 @@ namespace Exam2Prep
         }
 
         // Add a method to the OurDictionary class that returns the total
-        // number of hash collisions that have occured when
-        // the hash function is hash(i) = hash(key) + f(i) % < size >
-        // Keep in mind collisions occur when more than one key share a hash
-        // code, ensure your method operates in linear time or O(n).
+        // number of collisions that have occured in the dictionary.
+        // Keep in mind collisions occur when more than one key hash to the
+        // same value, ensure your method operates in linear time or O(n).
 
-        public int CountCollisions()
+        public int TotalCollisions()
         {
             int total = 0;
             for (int i = 0; i < table.Length; i++)
             {
+
                 if (table[i] == null || table[i].Status != StatusType.Active)
                 {
                     continue;
@@ -511,54 +511,49 @@ namespace Exam2Prep
 
                 int hash = Math.Abs(table[i].Key.GetHashCode() + f(0, table[i].Key)) % table.Length;
 
+                // hash value is not equal to the index it's located at (i.e collision
                 if (hash != i)
                 {
                     total++;
                 }
+
             }
             return total;
         }
+
         // Write a method for the OurDictionary class that returns
-        // the hash with the most collisions in the table.
+        // the key with the most collisions in the table. If no
+        // collisions have occured in the table the method should 
+        // return the "default" value for TKey 
         public TKey MostCollisions()
         {
+            // Return default if table is empty or null
             int[] collisions = new int[table.Length];
             int max = 0;
-            TKey maxCollisionKey = default;
+            TKey maxKey = default;
 
-            for (int i = 0; i < table.Length; i++)
+            foreach (Cell kV in table)
             {
-                if (table[i] == null || table[i].Status != StatusType.Active)
+                if (kV == null || kV.Status != StatusType.Active)
                 {
                     continue;
                 }
 
-                int hash = Math.Abs(table[i].Key.GetHashCode() + f(0, table[i].Key)) % table.Length;
+                int hash = Math.Abs(kV.Key.GetHashCode() + f(0, kV.Key)) % table.Length;
                 collisions[hash]++;
 
                 if (collisions[hash] > max)
                 {
                     max = collisions[hash];
-                    maxCollisionKey = table[i].Key;
+                    maxKey = table[hash].Key;
                 }
             }
-            return maxCollisionKey;
-        }
-        private int countCollisions(TKey aKey, int hash)
-        {
-            int count = 0;
-            while (table[hash] != null && table[hash].Status == StatusType.Active)
-            {
-                if (count == table.Length)
-                {
-                    return count;
-                }
-                hash = Math.Abs(aKey.GetHashCode() + f(count, aKey)) % table.Length;
-                count++;
-            }
-            return count;
+            return max > 1 ? maxKey : default;
         }
 
+        // Write a method for the OurDictionary class that returns a list of all
+        // active keys in the Dictionary. In your answer be sure to exclude null or
+        // deleted entries in the dictionary
         public List<TKey> GetKeys()
         {
             List<TKey> keys = new List<TKey>();
@@ -579,30 +574,33 @@ namespace Exam2Prep
         // Keep in mind the key may not be in the dictionary and to exclude 
         // empty and deleted cells
 
-        public bool HasMultipleHashes(TKey key)
+        public bool KeyCollides(TKey key)
         {
-            int hashCode = origHash(key);
+            int hashCode = HashKey(key);
             bool keyExists = false;
             int count = 0;
             foreach (Cell kv in table)
             {
                 if (kv == null || kv.Status != StatusType.Active)
                 {
-                    continue;
+                    continue; // Skip null / Deleted Items
                 }
 
-                int kvHash = origHash(kv.Key);
+                int kvHash = HashKey(kv.Key);
 
+                // Confirm Key Exists
                 if (kv.Key.Equals(key))
                 {
                     keyExists = true;
                 }
 
+                // Increment the number of occurences
                 if (kvHash == hashCode)
                 {
                     count++;
                 }
 
+                // If the key exists count will be 1 so if count 2 that means a collision has occured
                 if (keyExists && count > 1)
                 {
                     return true;
@@ -610,7 +608,7 @@ namespace Exam2Prep
             }
             return false;
         }
-        private int origHash(TKey key)
+        private int HashKey(TKey key)
         {
             return Math.Abs(key.GetHashCode() + f(0, key)) % table.Length;
         }
