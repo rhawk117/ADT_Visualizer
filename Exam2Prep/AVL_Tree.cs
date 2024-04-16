@@ -327,7 +327,7 @@ namespace Exam2Prep
             if (ptr == null)
                 return 0;
 
-            // Case 2 - No Child Nodes
+            // Case 2 - No Child Nodes 
             else if (ptr.Left == null && ptr.Right == null)
                 return 0;
 
@@ -480,7 +480,7 @@ namespace Exam2Prep
         public bool areEqual(AVL<T> other) => areEqual(other.root, root);
         public bool areEqual(Node oPtr, Node thisPtr)
         {
-            // Lazy Check
+            // Lazy Check - works 
             if (oPtr == null || thisPtr == null)
             {
                 return oPtr == thisPtr; // Check if both are null, if not they are not equal
@@ -493,10 +493,8 @@ namespace Exam2Prep
         }
 
         // Add a method to the OurAVLTree Class that takes in possible data of a node
-        // in the AVL Tree.
-
-        // - If the Data exists in the AVL Tree print the rest of the subtree from
-        // the Node.
+        // in the AVL Tree. If the Data exists in the AVL Tree print the rest of the subtree
+        // from the Node.
 
         public void PrintDown(T search)
         {
@@ -533,6 +531,7 @@ namespace Exam2Prep
             if (ptr == null) return;
 
             Console.Write($"{ptr.Data}");
+
             printDown(ptr.Left);
             printDown(ptr.Right);
         }
@@ -540,21 +539,138 @@ namespace Exam2Prep
 
         // in class solution 
 
-        // Add a method to the OurAVL Tree that returns a list of 
+        // Add a method to the OurAVL Tree that returns a lis  t of 
         // Nodes that are 'almost' unbalanced meaning that a rotation
-        // occur soon 
+        // will occur soon. 
 
 
         // Hint: Almost unbalanced Nodes have a
         // Balance Factor of either 1 or -1. 
         // Use the 'GetHeight' Method to assist
 
+        public List<Node> AlmostUnbalanced()
+        {
+            List<Node> items = new List<Node>();
+            AlmostUnbalanced(items, root);
+            return items;
+        }
+        private void AlmostUnbalanced(List<Node> items, Node cur)
+        {
+            if (cur == null) return; // base case
+
+            int bf = _balanceFactor(cur);
+
+            if (bf == -1 || bf == 1) items.Add(cur); // node is 'almost' unbalanced
+
+            // recursive case
+            AlmostUnbalanced(items, cur.Left);
+            AlmostUnbalanced(items, cur.Right);
+        }
+        private int _balanceFactor(Node cur)
+        {
+            if (cur == null) return 0;
+
+            return fetchHeight(cur.Left) - fetchHeight(cur.Right);
+        }
+        private int fetchHeight(Node cur)
+        {
+            if (cur == null) return 0;
+
+            return cur.Height;
+        }
+
+        // Balance String
+
+        public string WeightOf()
+        {
+            if (root == null)
+            {
+                return "";
+            }
+            int left = countSide(root.Left);
+            int right = countSide(root.Right);
+            string status = "";
+
+            if (left > right)
+                status = "Left Heavy";
+
+            else if (right > left)
+                status = "Right Heavy";
+
+            else
+                status = "Balanced";
+
+            return status;
+
+        }
+
+        private int countSide(Node cur)
+        {
+            if (cur == null) return 0;
+
+            return 1 + countSide(cur.Left) + countSide(cur.Right);
+        }
+
+
+
+
+
+        public bool IsPerfectlyBalanced()
+        {
+            return IsSymetric(root.Left, root.Right);
+        }
+        public bool IsSymetric(Node left, Node right)
+        {
+            if (left == null || right == null)
+            {
+                return left == null && right == null;
+            }
+            else if (left.Height != right.Height)
+            {
+                return false;
+            }
+            return IsSymetric(left.Left, right.Right) && IsSymetric(left.Right, right.Left);
+        }
 
 
 
 
 
 
+        // Add a method to the OurAVLTree 
+        // class that checks returns true if
+        // the AVL Tree is perfectly balanced.
+        // A perfectly balanced AVL Tree only contains nodes
+        // that have a balance factor of 0
+
+
+
+
+
+
+
+
+        public bool isPerfectlyBalanced()
+        {
+            return perfectBalance(root);
+        }
+        private bool perfectBalance(Node cur)
+        {
+            if (cur == null)
+            {
+                return true;
+            }
+
+            if (_balanceFactor(cur) != 0)
+            {
+                return false;
+            }
+
+            return perfectBalance(cur.Left) && perfectBalance(cur.Right);
+        }
+
+        // Add a method to the OurAVLTree class that returns the number of
+        // leaf nodes on the Tree.
 
 
 
@@ -620,6 +736,9 @@ namespace Exam2Prep
             Console.WriteLine("[ Performing in-order traversal of the AVL Tree.. ]");
             inOrder(root);
         }
+
+
+
         private void inOrder(Node ptr)
         {
             if (ptr == null)

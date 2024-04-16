@@ -203,6 +203,109 @@ namespace Exam2Prep
 
 
         }
+        public static void countLeaf()
+        {
+            for (uint i = 3; i <= 10; i++)
+            {
+                var cur = MakeQ(i);
+                cur.PrintTree();
+                WriteLine($"Leaves = {cur.CountLeaf()}");
+                await();
+                WriteLine("========================================");
+            }
+        }
+
+        // unit test
+        public static void GetKthRow()
+        {
+            var cases = new Dictionary<int, PriorQ<int, int>>();
+
+            cases[0] = MakeQ(8); cases[1] = MakeQ(15); cases[2] = MakeQ(21);
+
+            PriorQ<int, int> currentCase = new PriorQ<int, int>();
+            for (int i = 0; i < 3; i++)
+            {
+                currentCase = cases[i];
+                for (int k = 1; k <= 4; k++)
+                {
+                    try
+                    {
+                        WriteLine($"CASE {i} - ROW = {k} ");
+                        currentCase.PrintTree();
+                        await();
+
+                        var output = currentCase.GetKthRow(k);
+                        WriteLine("--OUTPUT--");
+                        viewArr(output);
+                        await();
+                        WriteLine("=========================================");
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        WriteLine($"Method properly caught out of bounds ({k}) kth row");
+                        WriteLine($"<< {ex.Message} >>");
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLine($"Unit test failed => {ex.Message}");
+                        await();
+                        WriteLine(ex.ToString());
+                        await();
+                        WriteLine(ex.StackTrace);
+                    }
+                    finally
+                    {
+                        await();
+                        WriteLine("=========================================");
+                    }
+
+                }
+            }
+        }
+
+        private static void viewArr(int[] a)
+        {
+            Write("{");
+            foreach (int i in a)
+            {
+                Write($"{i}, ");
+            }
+            Write("}");
+        }
+
+        private static void spacing()
+        {
+            await();
+            WriteLine("======================================================");
+        }
+
+        public static void testDeadZone()
+        {
+            var dict = new Dict<int, int>();
+            for (int i = 0; i < 31; i++)
+            {
+                dict.Add(i, i);
+            }
+            WriteLine(dict);
+            WriteLine($"\n\nLargest Deadzone = {dict.LargestDeadZone()}");
+            spacing();
+
+
+            dict = new Dict<int, int>(27);
+            for (int i = 1; i < 10; i++)
+            {
+                dict.Add(i, i);
+            }
+            dict.Add(20, 20);
+            WriteLine(dict);
+            WriteLine($"\n\nLargest Deadzone = {dict.LargestDeadZone()}");
+            spacing();
+
+
+
+
+        }
+
 
 
 
@@ -251,6 +354,32 @@ namespace Exam2Prep
             dict.Add(51, "fifty-one");
 
         }
+
+        public static void addBoth(Dict<int, int> a, Dict<int, int> b, int i)
+        {
+            a[i] = i;
+            b[i] = i;
+        }
+        public static void areEq()
+        {
+            var a = new Dict<int, int>();
+            var b = new Dict<int, int>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                addBoth(a, b, i);
+            }
+            b.Add(69, 69);
+            WriteLine($"Are Equal => {a.AreEqual(b)}");
+
+        }
+
+
+
+
+
+
+
     }
 
 }

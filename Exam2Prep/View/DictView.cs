@@ -69,7 +69,10 @@ namespace Exam2Prep.View
             }
             int keyToRmve = getIntput($"\n[-] Enter a key to Remove from the {type} or q to quit: ");
 
-            if (keyToRmve != -1) remove(keyToRmve);
+            if (keyToRmve != -1)
+            {
+                remove(keyToRmve);
+            }
 
             else
             {

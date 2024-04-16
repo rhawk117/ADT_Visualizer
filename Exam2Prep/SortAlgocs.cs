@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SortAlgos
 {
-    class MySort<T> where T : IComparable<T>
+    public static class MySort<T> where T : IComparable<T>
     {
         // ================================================================================
         //

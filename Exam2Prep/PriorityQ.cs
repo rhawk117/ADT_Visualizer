@@ -126,7 +126,7 @@ namespace OurPriorityQueue
         private void PercolateDown(int hole = 1)
         {
             int child;
-            // a.
+            // a. 
             Cell pTmp = table[hole];
 
             // b.
@@ -283,6 +283,27 @@ namespace OurPriorityQueue
             }
             return -1;
         }
+        // Add a method to the OurPriorityQueue class that returns
+        // true if it is a valid Min Binary Heap. This means that the
+        // root's priority has the smallest value in the heap and the 
+        // nodes with greater values are at the bottom
+        public bool IsValid()
+        {
+            for (int i = 1; i <= count; i++)
+            {
+                int left = 2 * i;
+                int right = left + 1;
+                if (left <= count && table[i].Priority.CompareTo(table[left].Priority) > 0)
+                {
+                    return false;
+                }
+                if (right <= count && table[i].Priority.CompareTo(table[right].Priority) > 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
 
         // dowell solution
@@ -365,7 +386,7 @@ namespace OurPriorityQueue
 
         // Write a method for the OurPriorityQueue class that
         // returns the parent of a priority that is passed
-        // to the method.
+        // to the method. 
 
         public TPriority GetParentPriority(TPriority ChildP)
         {
@@ -388,9 +409,63 @@ namespace OurPriorityQueue
             return table[pos / 2].Priority;
         }
 
+
+        // Add a method to the OurPriorityQueue class that
+        // returns the Priorities of the kth row in the binary heap.
+        //            (e.g)
+        //             1
+        //           /    \
+        //          2      3
+        //         / \    / \
+        //        4   5  6   7
+        //       / \
+        //      8   9
+        //
+        // GetKthRow(1) => { 1 }
+        // GetKthRow(2) => { 2, 3 }
+        // GetKthRow(3) => { 4, 5, 6, 7 }
+        // GetKthRow(4) => { 8, 9 }
+
+        public TPriority[] GetKthRow(int kthRow)
+        {
+            if (kthRow <= 0)
+            {
+                throw new ArgumentException("kthRow must be at least 1.");
+            }
+
+            int rowIter = (int)Math.Pow(2, kthRow - 1);  // 2^(k-1)
+            int bounds = (int)Math.Pow(2, kthRow) - 1;    // (2^k)    - 1
+
+            if (rowIter > count)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Start of Row {kthRow} is > count"
+                );
+            }
+
+            int size = Math.Min(count - rowIter + 1, rowIter);
+            TPriority[] rowItems = new TPriority[size];
+
+            int iter = 0;
+            for (int i = rowIter; i <= bounds && i <= count; i++)
+            {
+                rowItems[iter++] = table[i].Priority;
+            }
+
+            return rowItems;
+        }
+
+
+
+
+
+
+
+
+
         // Add a method to the OurPriorityQueue class that 
-        // Decreases the Priority of an item. It should return
-        // true if the operation is successful, otherwise false
+        // Decreases the Priority of a Cell in the Queue.
+        // It should return true if the operation is successful
 
         public bool DecreasePriority(TPriority search, TPriority update)
         {
@@ -440,22 +515,21 @@ namespace OurPriorityQueue
         public bool AreSiblings(TPriority left, TPriority right)
         {
             int r = -1, l = -1;
-            for (int i = 2; i <= count && r == -1 || l == -1; i++)
+            for (int i = 2; i <= count && (r == -1 || l == -1); i++)
             {
-                if (table[i].Priority.Equals(right))
+                var prio = table[i].Priority;
+                if (prio.Equals(right))
                 {
                     r = i;
                 }
-                else if (table[i].Priority.Equals(left))
+                else if (prio.Equals(left))
                 {
                     l = i;
                 }
             }
-            if (r == -1 || l == -1)
-            {
-                return false;
-            }
-            return r / 2 == l / 2;
+            if (r == -1 || l == -1) return false;
+
+            return l / 2 == r / 2;
         }
 
         // Write a method for the OurPriorityQueue class 
@@ -537,6 +611,22 @@ namespace OurPriorityQueue
             return true;
         }
 
+        // Add a method to the OurPriorityQueue class that accepts a priority
+        // and removes it from the Queue. Return true if the operation is successful
+        // otherwise return false
+
+
+        public int CountLeaf()
+        {
+            if (count == 0)
+            {
+                return 0;
+            }
+            int leaves = 0;
+            for (int i = (count / 2) + 1; i <= count; i++)
+                leaves++;
+            return leaves;
+        }
 
 
 
@@ -573,6 +663,27 @@ namespace OurPriorityQueue
 
             printAssist(2 * curIndex, indent + 1); // Left child
         }
+
+        public int countChild(TPriority parent)
+        {
+            if (count <= 1) return 0;
+
+            return countChild(parent, 1, false);
+        }
+        private int countChild(TPriority p, int cur, bool found)
+        {
+            if (cur > count)
+            {
+                return 0;
+            }
+            else if (!found)
+            {
+                return countChild(p, cur + 1, table[cur].Priority.Equals(p));
+            }
+            return 1 + countChild(p, cur * 2, true) + countChild(p, cur * 2 + 1, true);
+        }
+
+
 
 
     }

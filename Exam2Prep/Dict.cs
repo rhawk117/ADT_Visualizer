@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -236,7 +237,6 @@ namespace Exam2Prep
                 }
                 index = KeyToIndex(count, aKey);
                 Console.WriteLine($"[ Collision Occured trying Index => {index} ]");
-
             }
 
             // table slot is empty (e.g. never been used)
@@ -370,6 +370,10 @@ namespace Exam2Prep
             return n;
         }
 
+        // METHODS
+
+
+
         // Add a method to the OurDictionary class that returns the length of biggest cluster 
         // of active cells in the table.A cluster may wrap around from the end of the table to 
         // the beginning of the table --> this would be considered one cluster.Make sure your 
@@ -471,11 +475,11 @@ namespace Exam2Prep
 
         // Add a method called 'TryGetKey' to the OurDictionary class that accepts an item and, 
         // if the item is in the table, the method returns the item’s key value thru
-        // the second argument with the 'out' key word.
+        // the second argument with the 'ref' key word.
 
         // Keep in mind that the key value is not necessarily the position in the array.
 
-        public bool TryGetKey(TVal search, out TKey item)
+        public bool TryGetKey(TVal search, ref TKey item)
         {
             item = default;
             foreach (var cell in table)
@@ -525,9 +529,9 @@ namespace Exam2Prep
         // the key with the most collisions in the table. If no
         // collisions have occured in the table the method should 
         // return the "default" value for TKey 
+
         public TKey MostCollisions()
         {
-            // Return default if table is empty or null
             int[] collisions = new int[table.Length];
             int max = 0;
             TKey maxKey = default;
@@ -613,6 +617,81 @@ namespace Exam2Prep
         {
             return Math.Abs(key.GetHashCode() + f(0, key)) % table.Length;
         }
+        // Write a method for the OurDictionary class that accepts another dictionary
+        // the method returns true if they are equal to one another. An equal dictionary
+        // means they are carbon copies of one another (i.e the Keys & Values are the same
+        // at each index in the hash table). Ensure your method properly accounts for null
+        // cells. Hint: you can use the other dictionaries hash table 
+        public bool AreEqual(Dict<TKey, TVal> other)
+        {
+            if (other.table.Length != table.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < table.Length; i++)
+            {
+                if (!evalCell(table[i], other.table[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private bool evalCell(Cell a, Cell b)
+        {
+            if (a == null || b == null)
+            {
+                return a == null && b == null;
+            }
+            return a.Key.Equals(b.Key) && a.Status.Equals(b.Status)
+                && a.Value.Equals(b.Value);
+        }
+
+        // Add a method to the OurDictionary class that returns the largest
+        // "dead zone" in the hash table. Cells that are Deleted or Empty are
+        // considered dead and dead zones can wrap around from the 
+        // last index all the way to the start of the hash table so ensure your
+        // dictionary accounts for this. 
+
+        public int LargestDeadZone()
+        {
+            int best = 0;
+            int deadZoneSize = 0;
+            for (int i = 0; i < table.Length; i++)
+            {
+                if (table[i] == null || table[i].Status.Equals(StatusType.Deleted))
+                {
+                    deadZoneSize = countDeadZone(i, i);
+                    i += deadZoneSize - 1;
+                    best = Math.Max(best, deadZoneSize);
+                }
+            }
+            return best;
+        }
+
+        private int countDeadZone(int start, int cur)
+        {
+            if (table[cur] != null && table[cur].Status.Equals(StatusType.Active))
+            {
+                return 0;
+            }
+
+            wrap(ref cur);
+
+            if (cur == start)
+            {
+                return 1;
+            }
+
+            return 1 + countDeadZone(start, cur);
+        }
+
+        private void wrap(ref int index)
+        {
+            if (++index == table.Length)
+                index = 0;
+        }
+
 
 
 
